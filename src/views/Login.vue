@@ -28,6 +28,9 @@
         ></el-input>
       </el-form-item>
       <!-- <el-checkbox v-model="checked" class="rememberme">记住密码</el-checkbox> -->
+      <el-link type="primary" class="toRegister" @click="toRegister"
+        >没有账号？去注册</el-link
+      >
       <el-form-item style="width: 100%">
         <el-button
           type="primary"
@@ -89,6 +92,10 @@ export default {
         }
       });
     },
+    // 跳转到注册页面
+    toRegister() {
+      this.$router.push("/register");
+    },
   },
 };
 </script>
@@ -101,7 +108,6 @@ export default {
   background-repeat no-repeat
   background-attachment fixed
   background-size 100% 100%
-  z-index 99
   overflow hidden
   .header
     margin-top 40px
@@ -109,6 +115,7 @@ export default {
     color #fff
   .title
     text-align center
+    color #409eff
   .login-page
     -webkit-border-radius 5px
     border-radius 5px
@@ -118,6 +125,8 @@ export default {
     background #fff
     border 1px solid #eaeaea
     box-shadow 0 0 25px #cac6c6
+  .toRegister
+    margin-bottom 10px
 label.el-checkbox.rememberme
   margin 0px 0px 15px
   text-align left

@@ -52,6 +52,9 @@
         ></el-input>
       </el-form-item>
       <!-- <el-checkbox v-model="checked" class="rememberme">记住密码</el-checkbox> -->
+      <el-link type="primary" class="toLogin" @click="toLogin"
+        >已有账号？去登录</el-link
+      >
       <el-form-item style="width: 100%">
         <el-button
           type="primary"
@@ -200,6 +203,9 @@ export default {
         }
       });
     },
+    toLogin() {
+      this.$router.push("/login");
+    },
   },
 };
 </script>
@@ -219,15 +225,18 @@ export default {
     color #fff
   .title
     text-align center
+    color #409eff
   .login-page
     -webkit-border-radius 5px
     border-radius 5px
-    margin 50px auto 100px
+    margin 40px auto 100px
     width 380px
     padding 35px 35px 15px
     background #fff
     border 1px solid #eaeaea
     box-shadow 0 0 25px #cac6c6
+  .toLogin
+    margin-bottom 10px
 label.el-checkbox.rememberme
   margin 0px 0px 15px
   text-align left

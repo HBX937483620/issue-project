@@ -3,18 +3,25 @@ import VueRouter from 'vue-router'
 import Login from '@/views/Login'
 import Container from '@/views/Container'
 import Register from '@/views/Register'
+import Index from '@/views/Index.vue';
+import Create from '@/views/issue/Create.vue';
+import Report from '@/views/issue/Report.vue';
+import Manage from '@/views/account/Manage.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
+    redirect: '/index',
     name: 'Container',
     component: Container,
-    // children: [
-    //   {path: 'dashboard', name: '首页', component: Dashboard, },
-    //   {path: 'article', name: '文章', component: Article, },
-    // ]
+    children: [
+      { path: 'index', name: '首页', component: Index, },
+      { path: 'create', name: '创建Issue', component: Create, },
+      { path: 'report', name: 'Issue报表', component: Report, },
+      { path: 'manage', name: '账号管理', component: Manage, },
+    ]
   },
   {
     path: '/login',
@@ -34,4 +41,4 @@ const router = new VueRouter({
   routes
 })
 
-export default router
+export default router;

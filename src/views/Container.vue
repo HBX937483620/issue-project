@@ -13,32 +13,30 @@
           />
         </div>
         <div>
-          <!-- 我是样例菜单 -->
           <el-menu
-            default-active="1-4-1"
+            :default-active="$route.path"
+            router
             class="el-menu-vertical-demo"
             @open="handleOpen"
             :collapse="isCollapse"
           >
-            <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-document"></i>
-                <span slot="title">创建Issue</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-menu-item index="2">
+            <el-menu-item index="index" key="route.path + '/index'">
+              <i class="el-icon-house"></i>
+              <span slot="title">首页</span>
+            </el-menu-item>
+            <el-menu-item index="create" key="route.path + '/create'">
+              <i class="el-icon-document"></i>
+              <span slot="title">创建Issue</span>
+            </el-menu-item>
+            <el-menu-item index="report" key="route.path + '/report'">
               <i class="el-icon-menu"></i>
               <span slot="title">Issue报表</span>
             </el-menu-item>
-            <el-menu-item index="3" disabled>
+            <el-menu-item index="4" :disabled="isCollapse ? false : true">
               <i class="el-icon-document"></i>
-              <span slot="title">导航三</span>
+              <span slot="title">导航四</span>
             </el-menu-item>
-            <el-menu-item index="4">
+            <el-menu-item index="manage" key="route.path + '/manage'">
               <i class="el-icon-setting"></i>
               <span slot="title">账号管理</span>
             </el-menu-item>
@@ -55,31 +53,15 @@
             <i v-show="!isCollapse" class="el-icon-d-arrow-left"></i>
             <i v-show="isCollapse" class="el-icon-d-arrow-right"></i>
           </div>
-          <!-- 我是样例菜单 -->
           <el-menu
-            default-active="1"
+            :default-active="$route.path"
+            router
             class="el-menu-demo tab-page"
             mode="horizontal"
             @select="handleSelect"
             active-text-color="#409EFF"
           >
-            <el-menu-item index="1">处理中心</el-menu-item>
-            <el-submenu index="2">
-              <template slot="title">我的工作台</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
-              <el-menu-item index="2-2">选项2</el-menu-item>
-              <el-menu-item index="2-3">选项3</el-menu-item>
-              <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-                <el-menu-item index="2-4-2">选项2</el-menu-item>
-                <el-menu-item index="2-4-3">选项3</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-            <el-menu-item index="3" disabled>消息中心</el-menu-item>
-            <el-menu-item index="4">
-              <a href="#">订单管理</a>
-            </el-menu-item>
+            <el-menu-item :index="$route.path">{{ $route.name }}</el-menu-item>
           </el-menu>
 
           <div class="app-header-userinfo">
@@ -101,7 +83,7 @@
 
         <el-main class="app-body">
           <template>
-            <router-view />
+            <router-view :username="username" />
           </template>
         </el-main>
       </el-container>
@@ -119,6 +101,7 @@ export default {
     };
   },
   methods: {
+    // 侧边栏的收拉切换事件
     toggleSideBar() {
       this.isCollapse = !this.isCollapse;
     },
@@ -149,5 +132,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style lang="stylus" scoped></style>
