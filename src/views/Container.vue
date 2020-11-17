@@ -20,15 +20,15 @@
             @open="handleOpen"
             :collapse="isCollapse"
           >
-            <el-menu-item index="index" key="route.path + '/index'">
+            <el-menu-item index="index" key="index">
               <i class="el-icon-house"></i>
               <span slot="title">首页</span>
             </el-menu-item>
-            <el-menu-item index="create" key="route.path + '/create'">
+            <el-menu-item index="create" key="create">
               <i class="el-icon-document"></i>
               <span slot="title">创建Issue</span>
             </el-menu-item>
-            <el-menu-item index="report" key="route.path + '/report'">
+            <el-menu-item index="report" key="report">
               <i class="el-icon-menu"></i>
               <span slot="title">Issue报表</span>
             </el-menu-item>
@@ -36,7 +36,7 @@
               <i class="el-icon-document"></i>
               <span slot="title">导航四</span>
             </el-menu-item>
-            <el-menu-item index="manage" key="route.path + '/manage'">
+            <el-menu-item index="manage" key="manage">
               <i class="el-icon-setting"></i>
               <span slot="title">账号管理</span>
             </el-menu-item>
@@ -46,6 +46,7 @@
 
       <el-container>
         <el-header class="app-header">
+          <!-- 侧边栏收拉切换 -->
           <div
             style="width: 60px; cursor: pointer"
             @click.prevent="toggleSideBar"
@@ -54,14 +55,17 @@
             <i v-show="isCollapse" class="el-icon-d-arrow-right"></i>
           </div>
           <el-menu
-            :default-active="$route.path"
-            router
+            default-active="1"
             class="el-menu-demo tab-page"
             mode="horizontal"
             @select="handleSelect"
             active-text-color="#409EFF"
           >
-            <el-menu-item :index="$route.path">{{ $route.name }}</el-menu-item>
+            <el-menu-item index="1">{{ $route.name }}</el-menu-item>
+            <!-- <el-menu-item index="index" key="index">首页</el-menu-item>
+            <el-menu-item index="create" key="create">创建Issue</el-menu-item>
+            <el-menu-item index="report" key="report">Issue报表</el-menu-item>
+            <el-menu-item index="manage" key="manage">账号管理</el-menu-item> -->
           </el-menu>
 
           <div class="app-header-userinfo">

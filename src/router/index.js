@@ -13,6 +13,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
+    // 重定向到index页面
     redirect: '/index',
     name: 'Container',
     component: Container,

@@ -1,7 +1,82 @@
 <template>
   <div class="index">
-    <h2>Welcome, {{ username }}！</h2>
-    <h3>当前时间：{{ nowTime | formatDate }}</h3>
+    <div class="time">当前时间：{{ nowTime | formatDate }}</div>
+    <div class="title">
+      Welcome, <span>{{ username }}！</span>
+    </div>
+    <div class="display flex1">
+      <span class="allData">数据统计</span>
+      <div class="item">
+        <span>用户数</span>
+        <span class="num" id="userNum"></span>
+      </div>
+      <div class="item">
+        <span>员工数</span>
+        <span class="num" id="staffNum"></span>
+      </div>
+      <div class="item">
+        <span>部门数</span>
+        <span class="num" id="deptNum"></span>
+      </div>
+      <div class="item">
+        <span>职位数</span>
+        <span class="num" id="postNum"></span>
+      </div>
+      <div class="item">
+        <span>角色数</span>
+        <span class="num" id="roleNum"></span>
+      </div>
+      <div class="item">
+        <span>公告数</span>
+        <span class="num" id="noticeNum"></span>
+      </div>
+      <div class="item">
+        <span>文件数</span>
+        <span class="num" id="fileNum"></span>
+      </div>
+    </div>
+    <div class="display">
+      <span class="allData">系统信息</span>
+      <div class="content">
+        <div class="name">开发语言</div>
+        <div class="answer">Java HTML CSS JavaScript Vue</div>
+      </div>
+      <div class="content">
+        <div class="name">框架</div>
+        <div class="answer">SSM ElementUI</div>
+      </div>
+      <div class="content">
+        <div class="name">操作系统</div>
+        <div class="answer">win10</div>
+      </div>
+      <div class="content">
+        <div class="name">数据库</div>
+        <div class="answer">MySQL5.7</div>
+      </div>
+      <div class="content">
+        <div class="name">服务器</div>
+        <div class="answer">Tomcat8.5</div>
+      </div>
+      <div class="content">
+        <div class="name">Java环境</div>
+        <div class="answer">JDK 1.8</div>
+      </div>
+    </div>
+    <div class="display">
+      <span class="allData">开发团队</span>
+      <div class="content">
+        <div class="name">前端开发</div>
+        <div class="answer">蔡梓杰、钟浩</div>
+      </div>
+      <div class="content">
+        <div class="name">后端开发</div>
+        <div class="answer">黄健超、黄金全、何柏祥</div>
+      </div>
+      <div class="content">
+        <div class="name">测试</div>
+        <div class="answer">刘健丰、陈祝愿、陈世明</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -66,4 +141,61 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.index
+  position relative
+  .title
+    font-size 33px
+    font-weight 600
+    color #2c3a47
+    border-left 10px solid #6c5ce7
+    margin-left 10px
+    padding-left 10px
+    span
+      font-size 24px
+      color #6c5ce7
+  .time
+    font-size 26px
+    float right
+    color #e056fd
+  .display
+    position relative
+    padding 20px
+    border 4px solid #1e90ff
+    border-radius 12px
+    margin-top 35px
+    .allData
+      position absolute
+      top -14px
+      left 18px
+      font-size 20px
+      background-color #fff
+      padding 0 6px 0
+    .item
+      font-size 18px
+      position relative
+      flex 2
+      display flex
+      flex-direction column
+      text-align center
+      span
+        color #84817a
+        padding 8px
+        flex 1
+      .num
+        font-size 32px
+        color #7158e2
+    .content
+      display flex
+      .name
+        flex 1
+        padding 10px
+        font-size 18px
+        font-weight 700
+      .answer
+        padding 10px
+        font-size 18px
+        flex 10
+  .flex1
+    display flex
+</style>
