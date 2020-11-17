@@ -3,7 +3,7 @@
     <h1 class="header">ISSUE管理系统 / 注册</h1>
     <el-form
       :model="ruleForm1"
-      :rules="rules2"
+      :rules="rules1"
       status-icon
       ref="ruleForm1"
       label-position="left"
@@ -11,18 +11,18 @@
       class="demo-ruleForm login-page"
     >
       <h2 class="title">注册</h2>
-      <el-form-item prop="id" label="系统ID">
+      <el-form-item prop="userid" label="系统ID">
         <el-input
           type="text"
-          v-model="ruleForm1.id"
+          v-model="ruleForm1.userid"
           auto-complete="off"
           placeholder="系统ID"
         ></el-input>
       </el-form-item>
-      <el-form-item prop="username" label="姓名">
+      <el-form-item prop="name" label="姓名">
         <el-input
           type="text"
-          v-model="ruleForm1.username"
+          v-model="ruleForm1.name"
           auto-complete="off"
           placeholder="姓名"
         ></el-input>
@@ -70,8 +70,37 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
+    // 校验userid是否已经存在于数据库
+    var validateIsExistId = (rule, value, callback) => {
+      // axios发送post请求，查询系统ID是否已存在于数据库
+      axios
+        .post("/api/isExistId", {
+          userid: this.ruleForm1.userid,
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res.data) {
+            // 数据库中已存在该系统ID
+            this.$message({
+              message: "系统ID已存在，请重新输入！",
+              type: "warning",
+            });
+            this.isExistId = true;
+            callback(new Error("系统ID已存在！"));
+          } else {
+            // 数据库中不存在该系统ID，可继续注册
+            this.isExistId = false;
+            callback();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     // 密码校验规则，8-30位，必须同时包含大小写和特殊字符
     var regex = new RegExp("(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}");
     var validatePass = (rule, value, callback) => {
@@ -97,16 +126,17 @@ export default {
 
     // 数据
     return {
+      isExistId: false,
       logining: false,
       ruleForm1: {
         id: "",
-        username: "admin",
+        name: "",
         email: "",
-        password: "123456",
-        checkPassword: "123456",
+        password: "",
+        checkPassword: "",
       },
-      rules2: {
-        id: [
+      rules1: {
+        userid: [
           // 不为空验证
           {
             required: true,
@@ -119,8 +149,13 @@ export default {
             max: 30,
             trigger: "change",
           },
+          // userid是否已存在于数据库的验证
+          {
+            validator: validateIsExistId,
+            trigger: "change",
+          },
         ],
-        username: [
+        name: [
           // 不为空验证
           {
             required: true,
@@ -183,26 +218,34 @@ export default {
     handleSubmit(event) {
       this.$refs.ruleForm1.validate((valid) => {
         if (valid) {
-          this.logining = true;
-          if (
-            this.ruleForm1.username === "admin" &&
-            this.ruleForm1.password === "123456"
-          ) {
-            this.logining = false;
-            sessionStorage.setItem("user", this.ruleForm1.username);
-            this.$router.push({ path: "/" });
-          } else {
-            this.logining = false;
-            this.$alert("username or password wrong!", "info", {
-              confirmButtonText: "ok",
+          axios
+            .post("/api/register", {
+              userid: this.ruleForm1.userid,
+              name: this.ruleForm1.name,
+              password: this.ruleForm1.password,
+              email: this.ruleForm1.email,
+            })
+            .then((res) => {
+              console.log(res);
+              this.logining = false;
+              // 把用户名添加进sessionStorage中,并跳转到系统主页面
+              sessionStorage.setItem("user", this.ruleForm1.name);
+              this.$router.push({ path: "/" });
+            })
+            .catch((err) => {
+              console.log(err);
+              this.logining = false;
             });
-          }
         } else {
           console.log("error submit!");
+          this.$alert("请检查您的输入", "输入有误", {
+            confirmButtonText: "ok",
+          });
           return false;
         }
       });
     },
+    // 路由跳转 -> 跳转到登录页面
     toLogin() {
       this.$router.push("/login");
     },
@@ -213,7 +256,6 @@ export default {
 <style scoped lang="stylus">
 .login-container
   width 100%
-  height 100%
   background-image url('../../src/assets/images/backgroundImg.jpg')
   background-repeat no-repeat
   background-attachment fixed

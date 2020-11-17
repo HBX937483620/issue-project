@@ -69,6 +69,12 @@
           </el-menu>
 
           <div class="app-header-userinfo">
+            <div class="user-img">
+              <img
+                src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/Icon/user_image.jpg?sign=9f9d56521d6e7ba57afcf1cfcea13a30&t=1588948688"
+                alt="用户头像"
+              />
+            </div>
             <el-dropdown trigger="hover" :hide-on-click="false">
               <span class="el-dropdown-link">
                 {{ username }}
@@ -112,7 +118,7 @@ export default {
     logout: function () {
       this.$confirm("确认退出?", "提示", {})
         .then(() => {
-          sessionStorage.removeItem("user");
+          sessionStorage.removeItem("name");
           this.$router.push("/login");
         })
         .catch(() => {});
@@ -128,12 +134,25 @@ export default {
     },
   },
   mounted: function () {
-    let user = sessionStorage.getItem("user");
-    if (user) {
-      this.username = user;
+    // 未登录直接访问系统主页设置警告，并跳转到登录页面
+    let name = sessionStorage.getItem("name");
+    if (name) {
+      this.username = name;
+    } else {
+      this.$alert("请先登录", "无效的请求", {
+        confirmButtonText: "ok",
+      }).then(() => {
+        this.$router.push("/login");
+      });
     }
   },
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.user-img
+  margin-right 10px
+  img
+    width 55px
+    height 55px
+</style>

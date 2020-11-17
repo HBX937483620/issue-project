@@ -11,10 +11,10 @@
       class="demo-ruleForm login-page"
     >
       <h2 class="title">系统登录</h2>
-      <el-form-item prop="username">
+      <el-form-item prop="userid">
         <el-input
           type="text"
-          v-model="ruleForm2.username"
+          v-model="ruleForm2.userid"
           auto-complete="off"
           placeholder="系统ID"
         ></el-input>
@@ -45,16 +45,18 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       logining: false,
       ruleForm2: {
-        username: "admin",
-        password: "123456",
+        userid: "",
+        password: "",
       },
       rules2: {
-        username: [
+        userid: [
           {
             required: true,
             message: "请输入您的系统ID",
@@ -73,26 +75,56 @@ export default {
       this.$refs.ruleForm2.validate((valid) => {
         if (valid) {
           this.logining = true;
-          if (
-            this.ruleForm2.username === "admin" &&
-            this.ruleForm2.password === "123456"
-          ) {
-            this.logining = false;
-            sessionStorage.setItem("user", this.ruleForm2.username);
-            this.$router.push({ path: "/" });
-          } else {
-            this.logining = false;
-            this.$alert("username or password wrong!", "info", {
-              confirmButtonText: "ok",
-            });
-          }
+          this.judgeLogin();
         } else {
           console.log("error submit!");
+          this.$alert("请检查您的输入", "输入有误", {
+            confirmButtonText: "ok",
+          });
           return false;
         }
       });
     },
-    // 跳转到注册页面
+    // 登录请求
+    judgeLogin() {
+      console.log(this.ruleForm2.userid);
+      axios
+        .post("/api/login", {
+          userid: this.ruleForm2.userid,
+          password: this.ruleForm2.password,
+        })
+        .then((res) => {
+          console.log(res.data);
+          console.log(res.data.name);
+          // 1 登录成功  0 用户不存在 -1 密码错误 2 用户已注销
+          switch (res.data.flag) {
+            case "1":
+              sessionStorage.setItem("name", res.data.name);
+              sessionStorage.setItem("permission", res.data.permission);
+              this.$router.push({ path: "/" });
+              break;
+            case "0":
+              this.$alert("用户不存在", "系统ID不存在", {
+                confirmButtonText: "ok",
+              });
+              break;
+            case "-1":
+              this.$alert("密码错误", "请检查您的密码", {
+                confirmButtonText: "ok",
+              });
+              break;
+            case "2":
+              this.$alert("用户已注销", "该用户已注销！", {
+                confirmButtonText: "ok",
+              });
+              break;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 路由跳转 -> 跳转到注册页面
     toRegister() {
       this.$router.push("/register");
     },
@@ -102,11 +134,9 @@ export default {
 
 <style scoped lang="stylus">
 .login-container
-  width 100%
-  height 100%
   background-image url('../../src/assets/images/backgroundImg.jpg')
   background-repeat no-repeat
-  background-attachment fixed
+  // background-attachment fixed
   background-size 100% 100%
   overflow hidden
   .header

@@ -39,11 +39,15 @@
       <span class="allData">系统信息</span>
       <div class="content">
         <div class="name">开发语言</div>
-        <div class="answer">Java HTML CSS JavaScript Vue</div>
+        <div class="answer">Java HTML CSS JavaScript</div>
       </div>
       <div class="content">
         <div class="name">框架</div>
-        <div class="answer">SSM ElementUI</div>
+        <div class="answer">Vue(前端) SpringBoot Mybatis(后端)</div>
+      </div>
+      <div class="content">
+        <div class="name">UI组件库</div>
+        <div class="answer">ElementUI</div>
       </div>
       <div class="content">
         <div class="name">操作系统</div>
@@ -55,7 +59,7 @@
       </div>
       <div class="content">
         <div class="name">服务器</div>
-        <div class="answer">Tomcat8.5</div>
+        <div class="answer">Tomcat9.0</div>
       </div>
       <div class="content">
         <div class="name">Java环境</div>
