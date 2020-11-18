@@ -96,9 +96,11 @@ export default {
         .then((res) => {
           console.log(res.data);
           console.log(res.data.name);
+          console.log(res.data.flag);
           // 1 登录成功  0 用户不存在 -1 密码错误 2 用户已注销
           switch (res.data.flag) {
             case "1":
+              sessionStorage.setItem("userid", this.ruleForm2.userid);
               sessionStorage.setItem("name", res.data.name);
               sessionStorage.setItem("permission", res.data.permission);
               this.$router.push({ path: "/" });
@@ -106,22 +108,31 @@ export default {
             case "0":
               this.$alert("用户不存在", "系统ID不存在", {
                 confirmButtonText: "ok",
+                type: "error",
               });
+              this.$router.replace({ path: "/refresh" });
               break;
             case "-1":
               this.$alert("密码错误", "请检查您的密码", {
                 confirmButtonText: "ok",
+                type: "warning",
               });
+              this.$router.push({ path: "/refresh" });
               break;
             case "2":
               this.$alert("用户已注销", "该用户已注销！", {
                 confirmButtonText: "ok",
+                type: "warning",
               });
+              this.$router.push({ path: "/refresh" });
               break;
           }
         })
         .catch((err) => {
           console.log(err);
+          this.$alert("登录失败", "请检查服务端是否已开启", {
+            confirmButtonText: "ok",
+          });
         });
     },
     // 路由跳转 -> 跳转到注册页面

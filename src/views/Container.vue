@@ -24,19 +24,35 @@
               <i class="el-icon-house"></i>
               <span slot="title">首页</span>
             </el-menu-item>
-            <el-menu-item index="create" key="create">
-              <i class="el-icon-document"></i>
+            <el-menu-item
+              index="create"
+              key="create"
+              :disabled="createBan ? true : false"
+            >
+              <i class="el-icon-edit-outline"></i>
               <span slot="title">创建Issue</span>
             </el-menu-item>
-            <el-menu-item index="report" key="report">
-              <i class="el-icon-menu"></i>
+            <el-menu-item index="query" key="query">
+              <i class="el-icon-search"></i>
+              <span slot="title">查询Issue</span>
+            </el-menu-item>
+            <el-menu-item
+              index="report"
+              key="report"
+              :disabled="reportBan ? true : false"
+            >
+              <i class="el-icon-document"></i>
               <span slot="title">Issue报表</span>
             </el-menu-item>
             <el-menu-item index="4" :disabled="isCollapse ? false : true">
               <i class="el-icon-document"></i>
               <span slot="title">导航四</span>
             </el-menu-item>
-            <el-menu-item index="manage" key="manage">
+            <el-menu-item
+              index="manage"
+              key="manage"
+              :disabled="manageBan ? true : false"
+            >
               <i class="el-icon-setting"></i>
               <span slot="title">账号管理</span>
             </el-menu-item>
@@ -107,6 +123,11 @@ export default {
   data() {
     return {
       username: "",
+      permission: "",
+      indexBan: false,
+      createBan: false,
+      reportBan: false,
+      manageBan: false,
       isCollapse: false,
     };
   },
@@ -115,10 +136,13 @@ export default {
     toggleSideBar() {
       this.isCollapse = !this.isCollapse;
     },
+    // 退出登录，并把sessionStorage中的信息(用户名、身份信息)清除掉
     logout: function () {
       this.$confirm("确认退出?", "提示", {})
         .then(() => {
+          sessionStorage.removeItem("userid");
           sessionStorage.removeItem("name");
+          sessionStorage.removeItem("permission");
           this.$router.push("/login");
         })
         .catch(() => {});
@@ -136,6 +160,8 @@ export default {
   mounted: function () {
     // 未登录直接访问系统主页设置警告，并跳转到登录页面
     let name = sessionStorage.getItem("name");
+    let permission = sessionStorage.getItem("permission");
+    console.log(permission);
     if (name) {
       this.username = name;
     } else {
@@ -144,6 +170,28 @@ export default {
       }).then(() => {
         this.$router.push("/login");
       });
+    }
+    // 按照登陆者的身份信息禁掉相应的功能
+    switch (permission) {
+      // 1 表示普通用户 2 表示经理 3 超级Admin
+      case "1":
+        this.reportBan = true;
+        this.manageBan = true;
+        console.log(this.manageBan);
+        console.log(this.reportBan);
+        break;
+      case "2":
+        this.createBan = true;
+        this.manageBan = true;
+        console.log(this.createBan);
+        console.log(this.manageBan);
+        break;
+      case "3":
+        this.createBan = true;
+        this.reportBan = true;
+        console.log(this.createBan);
+        console.log(this.reportBan);
+        break;
     }
   },
 };

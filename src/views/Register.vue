@@ -228,9 +228,13 @@ export default {
             .then((res) => {
               console.log(res);
               this.logining = false;
+              this.$message({
+                message: "恭喜你，注册成功！",
+                type: "success",
+              });
               // 把用户名添加进sessionStorage中,并跳转到系统主页面
-              sessionStorage.setItem("user", this.ruleForm1.name);
-              this.$router.push({ path: "/" });
+              // sessionStorage.setItem("name", this.ruleForm1.name);
+              this.$router.push({ path: "/login" });
             })
             .catch((err) => {
               console.log(err);
@@ -240,6 +244,7 @@ export default {
           console.log("error submit!");
           this.$alert("请检查您的输入", "输入有误", {
             confirmButtonText: "ok",
+            type: "warning",
           });
           return false;
         }

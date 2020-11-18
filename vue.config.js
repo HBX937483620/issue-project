@@ -12,7 +12,9 @@ module.exports = {
   devServer: {
     proxy: { // 配置跨域
       '/api': {
-        target: 'http://100.2.176.58:8081',
+        // http://100.2.176.58:8081 金全
+        // http://100.2.163.111:8081
+        target: 'http://100.2.163.111:8081',
         changOrigin: true, // 允许跨域
         pathRewrite: {
           '^/api': ''

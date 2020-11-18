@@ -5,8 +5,10 @@ import Container from '@/views/Container'
 import Register from '@/views/Register'
 import Index from '@/views/Index.vue';
 import Create from '@/views/issue/Create.vue';
-import Report1 from '@/views/issue/Report1.vue';
-import Manage1 from '@/views/account/Manage1.vue';
+import Query from '@/views/issue/Query.vue';
+import Report from '@/views/issue/Report.vue';
+import Manage from '@/views/account/Manage.vue';
+import Refresh from '@/views/refresh/Refresh.vue';
 
 Vue.use(VueRouter);
 
@@ -21,13 +23,10 @@ const routes = [
     children: [
       { path: 'index', name: '首页', component: Index, },
       { path: 'create', name: '创建Issue', component: Create, },
-      { path: 'report', name: 'Issue报表', component: Report1, },
-      { path: 'manage', name: '账号管理', component: Manage1, },
+      { path: 'query', name: '查询Issue', component: Query, },
+      { path: 'report', name: 'Issue报表', component: Report, },
+      { path: 'manage', name: '账号管理', component: Manage, },
     ],
-    //需要登录，才能访问
-    // meta: {
-    //   requireAuth: true
-    // }
   },
   {
     path: '/login',
@@ -39,6 +38,12 @@ const routes = [
     name: 'Register',
     component: Register
   },
+  // 用来刷新当前页面的路由
+  {
+    path: '/refresh',
+    name: 'Refresh',
+    component: Refresh
+  },
 ]
 
 const router = new VueRouter({
@@ -46,20 +51,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(route => route.meta && route.meta.requiresAuth)) {
-//     if (!sessionStorage.getItem("user")) {  // 没有登录信息跳转到登录页
-//       next({
-//         path: "/login",
-//         query: { redirect: to.fullPath }  // 'to.fullPath'跳转到登录之前页面的路径
-//       });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next();
-//   }
-// });
 
 export default router;
