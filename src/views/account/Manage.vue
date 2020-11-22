@@ -28,6 +28,7 @@
         tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
       "
       border
+      stripe
       style="width: 100%"
     >
       <el-table-column type="selection"> </el-table-column>
@@ -61,7 +62,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="1"
-      :page-sizes="[5, 10]"
+      :page-sizes="[5, 10, 20]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
       :total="tableData.length"

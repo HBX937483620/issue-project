@@ -7,22 +7,30 @@
     <div class="display flex1">
       <span class="allData">数据统计</span>
       <div class="item">
-        <span>用户数</span>
+        <span>待解决Issue数</span>
         <span class="num" id="userNum"></span>
       </div>
       <div class="item">
-        <span>员工数</span>
+        <span>待验证Issue数</span>
+        <span class="num" id="userNum"></span>
+      </div>
+      <div class="item">
+        <span>已关闭Issue数</span>
+        <span class="num" id="userNum"></span>
+      </div>
+      <div class="item">
+        <span>普通用户数</span>
         <span class="num" id="staffNum"></span>
       </div>
       <div class="item">
-        <span>部门数</span>
+        <span>经理数</span>
         <span class="num" id="deptNum"></span>
       </div>
       <div class="item">
-        <span>职位数</span>
+        <span>超级Admin数</span>
         <span class="num" id="postNum"></span>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <span>角色数</span>
         <span class="num" id="roleNum"></span>
       </div>
@@ -33,7 +41,7 @@
       <div class="item">
         <span>文件数</span>
         <span class="num" id="fileNum"></span>
-      </div>
+      </div> -->
     </div>
     <div class="display">
       <span class="allData">系统信息</span>
@@ -106,6 +114,16 @@ export default {
   filters: {
     //过滤时间，实现时间的格式化
     formatDate: function (value) {
+      // 最好别放这，多次加载耗性能
+      const weekday = [
+        "星期天",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+      ];
       //创建一个时间日期对象
       var date = new Date();
       var year = date.getFullYear(); //存储年
@@ -114,7 +132,8 @@ export default {
       var hours = padaDate(date.getHours()); //存储时
       var minutes = padaDate(date.getMinutes()); //存储分
       var seconds = padaDate(date.getSeconds()); //存储秒
-      //返回格式化后的日期
+      var today = weekday[date.getDay()]; //存储星期几信息
+      //返回格式化后的日期 + 星期几
       return (
         year +
         "年" +
@@ -127,7 +146,8 @@ export default {
         minutes +
         "分" +
         seconds +
-        "秒"
+        "秒 " +
+        today
       );
     },
   },
@@ -139,6 +159,7 @@ export default {
     }, 1000);
   },
   beforeDestroy() {
+    // 清除定时器
     if (this.timeId) {
       clearInterval(this.timeId);
     }

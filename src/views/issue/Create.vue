@@ -7,7 +7,7 @@
       status-icon
       ref="ruleForm"
       label-position="left"
-      class="demo-ruleForm login-page"
+      class="demo-ruleForm login-page form"
     >
       <div class="title">Issue题目</div>
       <el-form-item prop="title">
@@ -76,6 +76,7 @@
             format="yyyy-MM-dd"
             value-format="timestamp"
             placeholder="选择日期"
+            :picker-options="pickerOptions"
           >
           </el-date-picker>
         </el-form-item>
@@ -114,6 +115,7 @@
           <el-input placeholder="内容" v-model="ruleForm.modifier"> </el-input>
         </el-form-item>
       </div>
+      <!-- 按钮 -->
       <div class="btn">
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
@@ -191,6 +193,12 @@ export default {
           label: "低",
         },
       ],
+      // 设置只能选择今天及之后的日期
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7; //如果没有后面的-8.64e7就是不可以选择今天的
+        },
+      },
       rules3: {
         title: [
           // 非空验证
@@ -318,8 +326,11 @@ export default {
 .title
   font-size 30px
   font-weight 550
-  color #9900ff
+  color #00a8ff
   margin-bottom 10px
+  margin-left 10px
+  padding-left 10px
+  border-left 10px solid #8c7ae6
 .btn
-  margin 0 auto
+  margin-left 35%
 </style>

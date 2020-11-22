@@ -102,7 +102,7 @@ export default {
     };
 
     // 密码校验规则，8-30位，必须同时包含大小写和特殊字符
-    var regex = new RegExp("(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}");
+    var regex = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,30}");
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -159,7 +159,7 @@ export default {
           // 不为空验证
           {
             required: true,
-            message: "请输入您的系统ID",
+            message: "请输入您的姓名",
             trigger: "change",
           },
           // 字符长度验证
@@ -266,6 +266,8 @@ export default {
   background-attachment fixed
   background-size 100% 100%
   overflow hidden
+  overflow-y auto
+  height 100%
   .header
     margin-top 40px
     text-align center

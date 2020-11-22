@@ -25,6 +25,7 @@
           v-model="ruleForm2.password"
           auto-complete="off"
           placeholder="密码"
+          @keyup.enter.native="handleSubmit"
         ></el-input>
       </el-form-item>
       <!-- <el-checkbox v-model="checked" class="rememberme">记住密码</el-checkbox> -->
@@ -89,10 +90,16 @@ export default {
     judgeLogin() {
       console.log(this.ruleForm2.userid);
       axios
-        .post("/api/login", {
-          userid: this.ruleForm2.userid,
-          password: this.ruleForm2.password,
-        })
+        .post(
+          "/api/login",
+          {
+            userid: this.ruleForm2.userid,
+            password: this.ruleForm2.password,
+          },
+          {
+            timeout: 7000,
+          }
+        )
         .then((res) => {
           console.log(res.data);
           console.log(res.data.name);
@@ -106,21 +113,25 @@ export default {
               this.$router.push({ path: "/" });
               break;
             case "0":
-              this.$alert("用户不存在", "系统ID不存在", {
-                confirmButtonText: "ok",
-                type: "error",
-              });
+              this.$alert(
+                "系统ID不存在，去注册一个账号吧 ⌯'ㅅ'⌯ ",
+                "用户不存在",
+                {
+                  confirmButtonText: "ok",
+                  type: "error",
+                }
+              );
               this.$router.replace({ path: "/refresh" });
               break;
             case "-1":
-              this.$alert("密码错误", "请检查您的密码", {
+              this.$alert("请检查您的密码 (๑•.•๑)", "密码错误", {
                 confirmButtonText: "ok",
                 type: "warning",
               });
               this.$router.push({ path: "/refresh" });
               break;
             case "2":
-              this.$alert("用户已注销", "该用户已注销！", {
+              this.$alert("该用户已注销 ( 0 x 0 )", "用户已注销", {
                 confirmButtonText: "ok",
                 type: "warning",
               });
@@ -130,9 +141,12 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.$alert("登录失败", "请检查服务端是否已开启", {
+          this.$alert("请检查服务端是否已开启", "登录失败", {
             confirmButtonText: "ok",
+            showClose: false,
+            type: "error",
           });
+          this.$router.push({ path: "/refresh" });
         });
     },
     // 路由跳转 -> 跳转到注册页面
@@ -150,6 +164,8 @@ export default {
   // background-attachment fixed
   background-size 100% 100%
   overflow hidden
+  overflow-y auto
+  height 100%
   .header
     margin-top 40px
     text-align center

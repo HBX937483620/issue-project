@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="report">
     <el-form
       :model="ruleForm"
       :inline="true"
@@ -9,17 +9,25 @@
       class="demo-ruleForm"
     >
       <el-form-item label="用户名称" prop="name">
-        <el-input v-model="ruleForm.name" style="width: 200px;"></el-input>
+        <el-input v-model="ruleForm.name" class="word-input"></el-input>
       </el-form-item>
       <el-form-item label="用户ID" prop="userId">
-        <el-input v-model="ruleForm.userId" style="width: 200px;"></el-input>
+        <el-input v-model="ruleForm.userId" class="word-input"></el-input>
       </el-form-item>
 
-      <el-form-item style="margin-left: 100px">
-        <el-button type="primary" @click="submitForm('ruleForm')"
+      <el-form-item style="margin-left: 30px">
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          @click="submitForm('ruleForm')"
           >查询</el-button
         >
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button
+          @click="resetForm('ruleForm')"
+          icon="el-icon-refresh-right"
+          class="reset-btn"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -28,6 +36,7 @@
         tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
       "
       border
+      stripe
       style="width: 100%"
     >
       <el-table-column type="selection"> </el-table-column>
@@ -35,7 +44,7 @@
       <el-table-column label="用户ID" sortable prop="date"> </el-table-column>
       <el-table-column label="用户姓名" prop="name"> </el-table-column>
       <el-table-column label="创建Issue数" prop="date"> </el-table-column>
-      <el-table-column label="收到的Issue数" prop="date"> </el-table-column>
+      <el-table-column label="收到Issue数" prop="date"> </el-table-column>
       <el-table-column label="修改Issue数" prop="date"> </el-table-column>
       <el-table-column label="完成率" prop="date"> </el-table-column>
     </el-table>
@@ -44,7 +53,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="1"
-      :page-sizes="[5, 10]"
+      :page-sizes="[5, 10, 20]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
       :total="tableData.length"
@@ -141,4 +150,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="stylus" scoped>
+.demo-ruleForm
+  .word-input
+    width 200px
+  .reset-btn
+    margin-left 20px
+</style>
