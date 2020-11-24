@@ -6,6 +6,7 @@
       <el-form-item label="Issue No" prop="issueId">
         <el-input
           v-model="ruleForm.issueId"
+          @keyup.enter.native="submitForm('ruleForm')"
           class="word-input"
           maxlength="30"
         ></el-input>
@@ -14,6 +15,7 @@
       <el-form-item label="创建人" prop="creator">
         <el-input
           v-model="ruleForm.creator"
+          @keyup.enter.native="submitForm('ruleForm')"
           class="word-input"
           maxlength="30"
         ></el-input>
@@ -22,6 +24,7 @@
       <el-form-item label="修改人" prop="modifier">
         <el-input
           v-model="ruleForm.modifier"
+          @keyup.enter.native="submitForm('ruleForm')"
           class="word-input"
           maxlength="30"
         ></el-input>
@@ -48,6 +51,7 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             value-format="timestamp"
+            :picker-options="pickerOptions"
           >
           </el-date-picker>
         </div>
@@ -140,13 +144,13 @@
       >
       </el-table-column>
       <el-table-column header-align="center" label="操作" width="192px">
-        <template>
+        <template slot-scope="scope">
           <el-button
             type="success"
             round
             size="mini"
             class="btn"
-            @click="showDetails = true"
+            @click.native.prevent="showDetail(scope.$index, tableData)"
             >详情</el-button
           >
           <el-button
@@ -154,7 +158,8 @@
             round
             type="primary"
             class="btn modify-btn"
-            @click="changeDialog = true"
+            :disabled="showChangeBtn(scope.$index, tableData)"
+            @click.native.prevent="showChangeDialog(scope.$index, tableData)"
             >修改</el-button
           >
           <el-button
@@ -162,7 +167,8 @@
             round
             type="info"
             class="btn"
-            @click="verification = true"
+            :disabled="showVerificationBtn(scope.$index, tableData)"
+            @click.native.prevent="showVerification(scope.$index, tableData)"
             >验证</el-button
           >
         </template>
@@ -182,49 +188,109 @@
     </el-pagination>
 
     <!-- 详情的弹窗 -->
-    <el-drawer :visible.sync="showDetails" direction="ltr" size="30%">
-      <el-form>
+    <el-drawer
+      :visible.sync="showDetails"
+      :show-close="false"
+      direction="ltr"
+      size="30%"
+      class="detailDrawer"
+    >
+      <el-form class="detail-form">
         <el-form-item label="Issue 题目" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.title"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="Issue NO" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.issueid"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="Issue 类型" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input :disabled="true" v-model="detail.type" class="detailsInput">
+          </el-input>
         </el-form-item>
         <el-form-item label="Issue 等级" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.level"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="Issue 状态" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.state"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="影响版本" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.version"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="创建时间" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.createdate"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="创建人" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.creator"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="修改时间" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.plandate"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="修改人" class="drawerItem" label-width="80px">
-          <el-input :disabled="true" class="detailsInput"> </el-input>
+          <el-input
+            :disabled="true"
+            v-model="detail.modifier"
+            class="detailsInput"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="重现步骤" class="area" label-width="80px">
           <el-input
             :disabled="true"
+            v-model="detail.content"
             class="detailsInput"
             type="textarea"
             autosize
           >
           </el-input>
         </el-form-item>
-        <el-form-item class="DrawerClose">
-          <el-button type="primary" @click="details = false">关闭</el-button>
+        <el-form-item label="解决方案" class="area" label-width="80px">
+          <el-input
+            :disabled="true"
+            v-model="detail.solution"
+            class="detailsInput"
+            type="textarea"
+            autosize
+          >
+          </el-input>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -241,8 +307,9 @@
           <el-input
             v-model="changeForm.solution"
             type="textarea"
-            placeholder="请输入内容"
+            placeholder="请输入解决方案"
             :autosize="{ minRows: 4, maxRows: 1000 }"
+            @keyup.enter.native="submitForm1('changeForm')"
           >
           </el-input>
         </el-form-item>
@@ -262,10 +329,18 @@
       class="verificationDialog"
     >
       <el-form id="verificationForm">
-        <el-button type="success" round class="verificationDialogButton"
+        <el-button
+          type="success"
+          round
+          class="verificationDialogButton"
+          @click.native.prevent="returnModify"
           >退回修改</el-button
         >
-        <el-button type="info" round class="verificationDialogButton"
+        <el-button
+          type="info"
+          round
+          class="verificationDialogButton"
+          @click.native.prevent="closeState"
           >关闭状态</el-button
         >
       </el-form>
@@ -278,6 +353,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      userid: "",
       //详情、修改、验证三个按钮对应的弹窗数据
       showDetails: false,
       changeDialog: false,
@@ -308,6 +384,22 @@ export default {
         endDate: "",
         value: "",
       },
+      // 详情的issue数据
+      detail: {
+        issueid: "",
+        title: "",
+        type: "",
+        level: "",
+        version: "",
+        creator: "",
+        createdate: "",
+        modifier: "",
+        state: "",
+        plandate: "",
+        enddate: "",
+        content: "",
+        solution: "",
+      },
       options: [
         {
           value: "1",
@@ -322,8 +414,19 @@ export default {
           label: "已关闭",
         },
       ],
+      // 设置只能选择今天及之前的日期
+      pickerOptions: {
+        //控制时间范围
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+      },
       // 表格的数据
       tableData: [],
+      // 修改按钮触发后的获取的modifyIssueid
+      modifyIssueid: "",
+      // 验证按钮触发后的获取的verificationIssueid
+      verificationIssueid: "",
     };
   },
   // 一值得记录的bug！！！
@@ -363,14 +466,40 @@ export default {
       }
       return this.$moment(date).format("YYYY-MM-DD");
     },
+    // 时间戳转换日期格式的处理函数
+    timestampToTime(timestamp) {
+      var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var Y = date.getFullYear() + "-";
+      var M =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "-";
+      var D =
+        (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
+      return Y + M + D;
+    },
+    // 是否显示修改按钮
+    // 只有当前用户是该条issue修改人和当前issue状态不为“已关闭”的情况下开放
+    showChangeBtn(index, rows) {
+      if (
+        this.userid == rows[index].modifier &&
+        rows[index].issuestate.detail != "已关闭"
+      ) {
+        return false;
+      }
+      return true;
+    },
+    // 是否显示验证按钮 只有当前用户是该条issue创建人的情况下开放
+    showVerificationBtn(index, rows) {
+      if (this.userid == rows[index].creator) {
+        return false;
+      }
+      return true;
+    },
     // 查询的表单提交函数
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$message({
-            message: "查询成功~~~",
-            type: "success",
-          });
           this.findReport();
         } else {
           // console.log("error submit!!");
@@ -382,13 +511,9 @@ export default {
     submitForm1(formName1) {
       this.$refs[formName1].validate((valid) => {
         if (valid) {
-          this.$message({
-            message: "查询成功~~~",
-            type: "success",
-          });
+          this.solve();
           this.changeDialog = false;
         } else {
-          // console.log("error submit!!");
           this.changeDialog = false;
           return false;
         }
@@ -398,19 +523,114 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    // 点击详情按钮的处理函数
+    showDetail(index, rows) {
+      this.showDetails = true;
+      console.log(rows[index].issueid);
+      const issueId = rows[index].issueid;
+      this.reportDetails(issueId);
+    },
+    // 显示issue详情的处理函数
+    reportDetails(issueId) {
+      axios
+        .post("/api/reportDetails", {
+          issueid: issueId,
+        })
+        .then((res) => {
+          console.log(res);
+          console.log(this.timestampToTime(res.data[0].createdate));
+          this.detail.issueid = res.data[0].issueid;
+          this.detail.title = res.data[0].title;
+          this.detail.type = res.data[0].type;
+          this.detail.level = res.data[0].level;
+          this.detail.version = res.data[0].version;
+          this.detail.creator = res.data[0].creator;
+          this.detail.createdate = this.timestampToTime(res.data[0].createdate);
+          this.detail.modifier = res.data[0].modifier;
+          this.detail.state = res.data[0].state;
+          this.detail.plandate = this.timestampToTime(res.data[0].plandate);
+          this.detail.enddate = this.timestampToTime(res.data[0].enddate);
+          this.detail.content = res.data[0].content;
+          this.detail.solution = res.data[0].solution;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 点击修改按钮的处理函数
+    showChangeDialog(index, rows) {
+      this.changeDialog = true;
+      this.modifyIssueid = rows[index].issueid;
+    },
+    // 提交解决方案的处理函数
+    solve() {
+      console.log(this.modifyIssueid);
+      axios
+        .post("/api/solve", {
+          issueid: this.modifyIssueid,
+          solution: this.changeForm.solution,
+        })
+        .then((res) => {
+          if (res.data == 1) {
+            this.$message({
+              message: "提交成功~~~",
+              type: "success",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 点击验证按钮的处理函数
+    showVerification(index, rows) {
+      this.verification = true;
+      this.verificationIssueid = rows[index].issueid;
+    },
+    // 验证弹窗中两个按钮的axios请求
+    verify(flag) {
+      // 利用一个变量来指向this
+      const _this = this;
+      axios
+        .post("/api/verify", {
+          issueid: this.verificationIssueid,
+          flag: flag,
+        })
+        .then((res) => {
+          console.log(res);
+          _this.verification = false;
+          this.findReport();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 验证弹窗点击退回修改的处理函数
+    returnModify() {
+      this.verify(1);
+      this.$message({
+        message: "退回修改成功~~~",
+        type: "success",
+      });
+    },
+    // 验证弹窗点击关闭状态的处理函数
+    closeState() {
+      this.verify(2);
+      this.$message({
+        message: "关闭状态成功~~~",
+        type: "success",
+      });
+    },
     // 选择每页显示多少条的处理函数
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`);
       this.pagesize = val;
     },
     // 选择当前页的处理函数
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    // 发送post请求，向后台请求report数据
+    // 模糊查询 发送post请求，向后台请求report数据
     findReport() {
-      // console.log(this.ruleForm.createDate);
       axios
         .post("/api/findReport", {
           issueid: this.ruleForm.issueId,
@@ -423,25 +643,37 @@ export default {
           endEndDate: this.ruleForm.endDate[1],
         })
         .then((res) => {
-          console.log(res.data);
-          // console.log(res.data[5].createDate);
+          this.$message({
+            message: "查询成功~~~",
+            type: "success",
+          });
           this.tableData = res.data;
         })
         .catch((err) => {
-          // console.log(err);
+          console.log(err);
         });
     },
   },
   created() {
     // 页面加载完后，默认将当前登录人的ID显示在修改人的框中
     let userid = sessionStorage.getItem("userid");
+    this.userid = userid;
     this.ruleForm.modifier = userid;
-    // 请求数据
+    // 创建时请求数据
     this.findReport();
   },
 };
 </script>
 <style lang="stylus" scoped>
+// 样式穿透
+// 当一个style标签拥有scoped属性时，它的CSS样式就只能作用于当前的组件。
+// 也就是说，该样式只能适用于当前组件元素。通过该属性，可以使得组件之间的样式不互相污染。
+// 通过 >>> 可以使得在使用scoped属性的情况下，穿透scoped，修改其他组件的值。
+>>>.el-drawer.ltr
+  overflow scroll
+// 隐藏滚动条
+>>>.el-drawer__container ::-webkit-scrollbar
+  display none
 .form > *
   float left
   margin-left 5%
@@ -468,11 +700,11 @@ export default {
   margin-top 10px
 .changFormButton
   margin-left 30%
-.drawerItem
-  padding-left 60px
-  padding-right 60px
-.el-drawer.ltr
-  overflow scroll
+.detail-form
+  margin-top -30px
+  .drawerItem
+    padding-left 60px
+    padding-right 60px
 .DrawerClose
   margin-left 47%
 .area
@@ -485,9 +717,9 @@ export default {
   top 10%
   left 25%
 .verificationDialog
-  width 34%
+  width 520px
   height 800px
   position absolute
   top 25%
-  left 34%
+  left 30%
 </style>

@@ -1,5 +1,16 @@
 <template>
   <div class="login-container">
+    <swiper :options="swiperOption" ref="mySwiper">
+      <swiper-slide
+        ><img class="img" src="../assets/images/backgroundImg.jpg" alt=""
+      /></swiper-slide>
+      <swiper-slide
+        ><img class="img" src="../assets/images/111.png" alt=""
+      /></swiper-slide>
+      <swiper-slide
+        ><img class="img" src="../assets/images/222.png" alt=""
+      /></swiper-slide>
+    </swiper>
     <h1 class="header">ISSUE管理系统 / 登录</h1>
     <el-form
       :model="ruleForm2"
@@ -47,11 +58,24 @@
 
 <script>
 import axios from "axios";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/dist/css/swiper.css";
 
 export default {
   data() {
     return {
+      //swiper 初始化
+      swiperOption: {
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          stopOnLastSlide: false,
+          disableOnInteraction: false,
+        },
+      },
+      // 内容
       logining: false,
+      passw: "password",
       ruleForm2: {
         userid: "",
         password: "",
@@ -154,22 +178,39 @@ export default {
       this.$router.push("/register");
     },
   },
+  components: {
+    swiper,
+    swiperSlide,
+  },
 };
 </script>
 
 <style scoped lang="stylus">
 .login-container
-  background-image url('../../src/assets/images/backgroundImg.jpg')
-  background-repeat no-repeat
+  // background-image url('../../src/assets/images/backgroundImg.jpg')
+  // background-repeat no-repeat
   // background-attachment fixed
-  background-size 100% 100%
-  overflow hidden
-  overflow-y auto
+  // background-size 100% 100%
+  overflow scroll
+  // overflow-y auto
+  // overflow-x auto
   height 100%
+  position relative
+  .img
+    display block
+    height 700px
+    width 100%
+    background-size cover
+    background-position center
+    background-repeat no-repeat
   .header
     margin-top 40px
     text-align center
     color #fff
+    position absolute
+    z-index 5
+    top 0
+    margin-left 36%
   .title
     text-align center
     color #409eff
@@ -182,6 +223,10 @@ export default {
     background #fff
     border 1px solid #eaeaea
     box-shadow 0 0 25px #cac6c6
+    position absolute
+    z-index 5
+    top 0
+    margin-left 33%
   .toRegister
     margin-bottom 10px
 label.el-checkbox.rememberme

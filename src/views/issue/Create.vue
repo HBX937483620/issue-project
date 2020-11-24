@@ -281,12 +281,15 @@ export default {
               content: this.ruleForm.content,
             })
             .then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
+              this.$message({
+                message: "创建成功~~~",
+                type: "success",
+              });
             })
             .catch((err) => {
               console.log(err);
             });
-          alert("submit!");
           this.resetForm("ruleForm");
         } else {
           console.log("error submit!!");

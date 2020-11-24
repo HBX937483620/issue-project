@@ -43,10 +43,6 @@
               <i class="el-icon-document"></i>
               <span slot="title">Issue报表</span>
             </el-menu-item>
-            <!-- <el-menu-item index="4" :disabled="isCollapse ? false : true">
-              <i class="el-icon-document"></i>
-              <span slot="title">导航四</span>
-            </el-menu-item> -->
             <el-menu-item
               index="manage"
               key="manage"
@@ -93,10 +89,8 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>我的消息</el-dropdown-item>
                 <el-dropdown-item>设置</el-dropdown-item>
-                <el-dropdown-item>
-                  <el-button type="text" @click="openDialog">
-                    修改个人信息
-                  </el-button>
+                <el-dropdown-item @click.native="openDialog">
+                  修改个人信息
                 </el-dropdown-item>
                 <el-dropdown-item divided @click.native="logout"
                   >退出登录</el-dropdown-item
@@ -138,34 +132,20 @@
         </el-form-item>
 
         <el-form-item prop="name" class="changeitem" label="姓名">
-          <el-input
-            placeholder="输入内容"
-            v-model="ruleForm.name"
-            class="item-input"
-          >
-          </el-input>
+          <el-input v-model="ruleForm.name" class="item-input"> </el-input>
         </el-form-item>
         <el-form-item prop="email" class="changeitem" label="邮箱">
-          <el-input
-            placeholder="输入内容"
-            v-model="ruleForm.email"
-            class="item-input"
-          >
-          </el-input>
+          <el-input v-model="ruleForm.email" class="item-input"> </el-input>
         </el-form-item>
 
         <el-form-item prop="password" class="changeitem" label="修改密码">
-          <el-input
-            v-model="ruleForm.password"
-            placeholder="输入内容"
-            class="item-input"
-          ></el-input>
+          <el-input v-model="ruleForm.password" class="item-input"></el-input>
         </el-form-item>
 
-        <el-form-item prop="password" label="确认密码" class="changeitem">
+        <el-form-item prop="checkPassword" label="确认密码" class="changeitem">
           <el-input
             v-model="ruleForm.checkPassword"
-            placeholder="输入内容"
+            @keyup.enter.native="submitForm('ruleForm')"
             class="item-input"
           ></el-input>
         </el-form-item>
@@ -249,14 +229,27 @@ export default {
           {
             type: "email",
             required: true,
-            message: "请输入正确的邮箱且长度限制在30字符以内",
+            message: "请输入正确的邮箱",
+            trigger: "change",
+          },
+          // 邮箱长度验证
+          {
+            max: 30,
+            message: "邮箱长度必须限制在30字符以内",
             trigger: "change",
           },
         ],
         password: [
+          // 密码非空验证
           {
             required: true,
             message: "密码不能为空",
+            trigger: "change",
+          },
+          // 密码长度验证
+          {
+            max: 30,
+            message: "密码长度必须限制在30字符以内",
             trigger: "change",
           },
           // 密码8-30位，且必须包含大小写和特殊字符的验证
@@ -268,7 +261,7 @@ export default {
         checkPassword: [
           {
             required: true,
-            message: "不能为空",
+            message: "请再次输入密码",
             trigger: "change",
           },
           // 两次密码一致性验证
@@ -300,9 +293,21 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          console.log(this.ruleForm.name);
+          this.updateUser();
+          // 用户修改个人信息可能会修改到用户名
+          // 如果用户修改了用户名，则需要更新sessionStorage中name属性的值
+          if (this.username != this.ruleForm.name) {
+            sessionStorage.setItem("name", this.ruleForm.name);
+            this.username = sessionStorage.getItem("name");
+          }
+          this.dialogVisible = false;
         } else {
           console.log("error submit!!");
+          this.$alert("请检查您的输入", "输入有误", {
+            confirmButtonText: "ok",
+            type: "warning",
+          });
           return false;
         }
       });
@@ -315,10 +320,36 @@ export default {
         })
         .then((res) => {
           console.log(res.data);
-          this.ruleForm.userId = this.ruleForm.name = res.data.name;
+          this.ruleForm.userId = res.data.userid;
+          this.ruleForm.name = res.data.name;
           this.ruleForm.email = res.data.email;
           this.ruleForm.password = res.data.password;
           this.ruleForm.checkPassword = res.data.password;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 修改用户信息的请求函数
+    updateUser() {
+      axios
+        .post("/api/updateUser", {
+          userid: this.ruleForm.userId,
+          name: this.ruleForm.name,
+          password: this.ruleForm.password,
+          email: this.ruleForm.email,
+        })
+        .then((res) => {
+          if (res.data == 1) {
+            // 查询成功提示
+            this.$message({
+              message: "修改成功~~~",
+              type: "success",
+            });
+          } else if (res.data == 0) {
+            // 查询失败提示
+            this.$message.error("查询失败~~~");
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -352,27 +383,27 @@ export default {
       });
     }
     // 按照登陆者的身份信息禁掉相应的功能
-    // switch (permission) {
-    //   // 1 表示普通用户 2 表示经理 3 超级Admin
-    //   case "1":
-    //     this.reportBan = true;
-    //     this.manageBan = true;
-    //     console.log(this.manageBan);
-    //     console.log(this.reportBan);
-    //     break;
-    //   case "2":
-    //     this.createBan = true;
-    //     this.manageBan = true;
-    //     console.log(this.createBan);
-    //     console.log(this.manageBan);
-    //     break;
-    //   case "3":
-    //     this.createBan = true;
-    //     this.reportBan = true;
-    //     console.log(this.createBan);
-    //     console.log(this.reportBan);
-    //     break;
-    // }
+    switch (permission) {
+      // 1 表示普通用户 2 表示经理 3 超级Admin
+      case "1":
+        this.reportBan = true;
+        this.manageBan = true;
+        console.log(this.manageBan);
+        console.log(this.reportBan);
+        break;
+      case "2":
+        this.createBan = true;
+        this.manageBan = true;
+        console.log(this.createBan);
+        console.log(this.manageBan);
+        break;
+      case "3":
+        this.createBan = true;
+        this.reportBan = true;
+        console.log(this.createBan);
+        console.log(this.reportBan);
+        break;
+    }
   },
 };
 </script>
