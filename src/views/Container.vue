@@ -104,6 +104,7 @@
                     :value="createNum"
                     :hidden="createNum > 0 ? false : true"
                     :max="10"
+                    @click="this.$router.push('/query')"
                   />
                 </el-dropdown-item>
                 <el-dropdown-item class="clearfix">
@@ -196,15 +197,26 @@
     <el-dialog
       :visible.sync="dialogVisible2"
       :close-on-click-modal="false"
-      width="20%"
+      width="24%"
+      class="wrapper"
     >
-      <input
-        class="file"
-        name="file"
-        type="file"
-        accept="image/png,image/gif,image/jpeg"
-        @change="upload"
-      />
+      <div class="user-img">
+        <el-avatar
+          shape="square"
+          :size="240"
+          fit="cover"
+          :src="circleUrl"
+        ></el-avatar>
+      </div>
+      <div class="file">
+        更换头像
+        <input
+          name="file"
+          type="file"
+          accept="image/png,image/gif,image/jpeg"
+          @change="upload"
+        />
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -550,4 +562,34 @@ export default {
   width 178px
   height 178px
   display block
+.wrapper
+  .user-img
+    margin 0 14%
+    img
+      width 240px
+  .file
+    margin 20px 36% 0
+    position relative
+    display inline-block
+    background #D0EEFF
+    border 1px solid #99D3F5
+    border-radius 4px
+    padding 4px 12px
+    overflow hidden
+    color #1E88C7
+    text-decoration none
+    text-indent 0
+    line-height 20px
+.file input
+  position absolute
+  font-size 100px
+  margin-left 100px
+  right 0
+  top 0
+  opacity 0
+.file:hover
+  background #AADFFD
+  border-color #78C3F3
+  color #004974
+  text-decoration none
 </style>

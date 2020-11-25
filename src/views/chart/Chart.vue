@@ -40,17 +40,30 @@ export default {
             color: "#c56cf0", // 主标题文字颜色
           },
         },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b} : {c} ({d}%)",
+        },
         series: [
           {
             name: "访问来源",
             type: "pie",
             radius: "55%",
-            center: ["50%", "50%"],
+            center: ["70%", "50%"],
             data: [
               { value: res.data.createNum, name: "待解决Issue数" },
               { value: res.data.modefiNum, name: "待验证Issue数" },
               { value: res.data.finishNum, name: "已关闭Issue数" },
             ],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  formatter: "{b} : {c} ({d}%)",
+                },
+                labelLine: { show: true },
+              },
+            },
           },
         ],
         legend: {
@@ -60,7 +73,7 @@ export default {
           data: ["待解决Issue数", "待验证Issue数", "已关闭Issue数"],
         },
         textStyle: {
-          fontSize: 19, //字体大小
+          fontSize: 16, //字体大小
         },
       });
       UserChart.setOption({
@@ -80,7 +93,7 @@ export default {
             name: "访问来源",
             type: "pie",
             radius: "55%",
-            center: ["50%", "50%"],
+            center: ["50%", "90%"],
             data: [
               { value: res.data.commonNum, name: "普通用户数" },
               { value: res.data.manageNum, name: "经理数" },

@@ -158,7 +158,12 @@
             round
             type="primary"
             class="btn modify-btn"
-            :disabled="showChangeBtn(scope.$index, tableData)"
+            :disabled="
+              showChangeBtn(
+                scope.$index + (currentPage - 1) * pagesize,
+                tableData
+              )
+            "
             @click.native.prevent="showChangeDialog(scope.$index, tableData)"
             >修改</el-button
           >
@@ -167,7 +172,12 @@
             round
             type="info"
             class="btn"
-            :disabled="showVerificationBtn(scope.$index, tableData)"
+            :disabled="
+              showVerificationBtn(
+                scope.$index + (currentPage - 1) * pagesize,
+                tableData
+              )
+            "
             @click.native.prevent="showVerification(scope.$index, tableData)"
             >验证</el-button
           >

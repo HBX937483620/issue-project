@@ -195,7 +195,7 @@ export default {
     font normal 12px 'Helvetica Neue', Helvetica, sans-serif
     user-select none
     text-shadow 0 1px 0 rgba(0, 0, 0, 0.3)
-    max-height 10vh
+    max-height 12vh
     display flex
     align-items center
     justify-content center
@@ -211,11 +211,11 @@ export default {
       color #6c5ce7
   .time
     font-size 36px
-    line-height 65px
+    line-height 80px
     font-weight 900
     float right
     margin-right 10px
-    text-shadow 3px 3px #00a8ff
+    text-shadow 2px 2px #00a8ff
   .display
     position relative
     padding 20px
