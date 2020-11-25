@@ -153,7 +153,7 @@ export default {
       axios
         .post("/api/getAll")
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.createNum = res.data.createNum;
           this.modefiNum = res.data.modefiNum;
           this.finishNum = res.data.finishNum;
@@ -215,7 +215,7 @@ export default {
     font-weight 900
     float right
     margin-right 10px
-    color #00a8ff
+    text-shadow 3px 3px #00a8ff
   .display
     position relative
     padding 20px

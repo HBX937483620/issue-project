@@ -83,11 +83,13 @@
           </el-menu>
 
           <div class="app-header-userinfo">
-            <div class="user-img">
-              <img
-                src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/Icon/user_image.jpg?sign=9f9d56521d6e7ba57afcf1cfcea13a30&t=1588948688"
-                alt="用户头像"
-              />
+            <div class="block">
+              <el-avatar
+                :size="50"
+                :src="circleUrl"
+                @error="errorHandler"
+                @click.native="dialogVisible2 = true"
+              ></el-avatar>
             </div>
             <el-dropdown trigger="hover" :hide-on-click="false">
               <span class="el-dropdown-link">
@@ -99,16 +101,20 @@
                   待修改Issue
                   <el-badge
                     class="mark"
-                    :value="12"
-                    :hidden="false"
+                    :value="createNum"
+                    :hidden="createNum > 0 ? false : true"
                     :max="10"
                   />
                 </el-dropdown-item>
                 <el-dropdown-item class="clearfix">
                   待验证Issue
-                  <el-badge class="mark" :value="3" :hidden="false" :max="10" />
+                  <el-badge
+                    class="mark"
+                    :value="modifiNum"
+                    :hidden="modifiNum > 0 ? false : true"
+                    :max="10"
+                  />
                 </el-dropdown-item>
-                <el-dropdown-item>设置</el-dropdown-item>
                 <el-dropdown-item @click.native="openDialog">
                   修改个人信息
                 </el-dropdown-item>
@@ -185,6 +191,21 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <!-- 修改用户头像的弹窗 -->
+    <el-dialog
+      :visible.sync="dialogVisible2"
+      :close-on-click-modal="false"
+      width="20%"
+    >
+      <input
+        class="file"
+        name="file"
+        type="file"
+        accept="image/png,image/gif,image/jpeg"
+        @change="upload"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -218,14 +239,22 @@ export default {
     };
     return {
       // userid: "",
+      circleUrl:
+        "https://7975-yuncloud-123-1301997245.tcb.qcloud.la/Icon/user_image.jpg?sign=9f9d56521d6e7ba57afcf1cfcea13a30&t=1588948688",
       username: "",
       permission: "",
+      createNum: "",
+      modifiNum: "",
+      // 用户头像图片路径
+      imageUrl:
+        "https://7975-yuncloud-123-1301997245.tcb.qcloud.la/Icon/user_image.jpg?sign=9f9d56521d6e7ba57afcf1cfcea13a30&t=1588948688",
       indexBan: false,
       createBan: false,
       reportBan: false,
       manageBan: false,
       isCollapse: false,
       dialogVisible: false,
+      dialogVisible2: false,
       // 当前用户的信息
       // currentName: "",
       // currentEmail: "",
@@ -301,6 +330,11 @@ export default {
     };
   },
   methods: {
+    //头像加载失败
+    errorHandler() {
+      return true;
+    },
+
     // 侧边栏的收拉切换事件
     toggleSideBar() {
       this.isCollapse = !this.isCollapse;
@@ -312,6 +346,7 @@ export default {
           sessionStorage.removeItem("userid");
           sessionStorage.removeItem("name");
           sessionStorage.removeItem("permission");
+          sessionStorage.removeItem("url");
           this.$router.push("/login");
         })
         .catch(() => {});
@@ -382,6 +417,21 @@ export default {
           console.log(err);
         });
     },
+    // 请求当前用户待修改issue数、待验证issue数
+    getUser() {
+      axios
+        .post("/api/getUser", {
+          userid: this.ruleForm.userId,
+        })
+        .then((res) => {
+          // console.log(res);
+          this.createNum = res.data.createNum;
+          this.modifiNum = res.data.modifiNum;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     // 切换dialog状态
     openDialog() {
       this.getUserInfo();
@@ -390,16 +440,41 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
     },
+    // 用户头像的相关处理函数
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    // 文件上传的处理函数
+    upload(e) {
+      console.log(e);
+      let file = e.target.files[0];
+      let param = new FormData(); //创建form对象
+      param.append("userid", this.ruleForm.userId);
+      param.append("file", file); //通过append向form对象添加数据
+      console.log(param.get("file")); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      console.log(param.get("userid"));
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      }; //添加请求头
+      axios.post("api/getUserPic", param, config).then((res) => {
+        console.log(res.data);
+        this.circleUrl = res.data;
+        sessionStorage.setItem("url", res.data);
+        this.dialogVisible2 = false;
+      });
+    },
   },
   mounted: function () {
     // 未登录直接访问系统主页设置警告，并跳转到登录页面
     let userid = sessionStorage.getItem("userid");
     let name = sessionStorage.getItem("name");
     let permission = sessionStorage.getItem("permission");
-    // console.log(permission);
+    let url = sessionStorage.getItem("url");
+    console.log(url);
     if (name) {
       this.username = name;
       this.ruleForm.userId = userid;
+      this.circleUrl = url;
     } else {
       this.$alert("请先登录 好伐 （￣～￣）", "无效的请求", {
         showClose: false, //不提供关闭按钮
@@ -409,6 +484,8 @@ export default {
         this.$router.push("/login");
       });
     }
+    // 获取当前用户的待修改和待验证issue数
+    this.getUser();
     // 按照登陆者的身份信息禁掉相应的功能
     // switch (permission) {
     //   // 1 表示普通用户 2 表示经理 3 超级Admin
@@ -436,11 +513,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.user-img
+.block
   margin-right 10px
-  img
-    width 55px
-    height 55px
+  border-radius 50%
+  // box-shadow 0px 0px 4px 0px
 .changeform
   position relative
   padding 0 20px
@@ -455,4 +531,23 @@ export default {
   margin-left 35%
 .changeitem
   margin-top 10px
+.avatar-uploader .el-upload
+  border 1px dashed #d9d9d9
+  border-radius 6px
+  cursor pointer
+  position relative
+  overflow hidden
+.avatar-uploader .el-upload:hover
+  border-color #409EFF
+.avatar-uploader-icon
+  font-size 28px
+  color #8c939d
+  width 178px
+  height 178px
+  line-height 178px
+  text-align center
+.avatar
+  width 178px
+  height 178px
+  display block
 </style>

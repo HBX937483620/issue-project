@@ -130,12 +130,14 @@ export default {
           console.log(res.data);
           console.log(res.data.name);
           console.log(res.data.flag);
+          console.log(res.data.url);
           // 1 登录成功  0 用户不存在 -1 密码错误 2 用户已注销
           switch (res.data.flag) {
             case "1":
               sessionStorage.setItem("userid", this.ruleForm2.userid);
               sessionStorage.setItem("name", res.data.name);
               sessionStorage.setItem("permission", res.data.permission);
+              sessionStorage.setItem("url", res.data.url);
               this.$router.push({ path: "/" });
               break;
             case "0":
@@ -226,6 +228,7 @@ export default {
     box-shadow 0 0 25px #cac6c6
     position absolute
     z-index 5
+    border-radius 15px
     top 10%
     bottom 0
     left 0

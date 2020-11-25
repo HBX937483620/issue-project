@@ -190,7 +190,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="1"
-      :page-sizes="[5, 10, 20]"
+      :page-sizes="[5, 10, 20, 50]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
       :total="tableData.length"
@@ -490,14 +490,22 @@ export default {
           : date.getMonth() + 1) + "-";
       var D =
         (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
-      return Y + M + D;
+      var H =
+        (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + " ";
+      var m =
+        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+        " ";
+      var S =
+        (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()) +
+        " ";
+      return Y + M + D + H + m + S;
     },
     // 是否显示修改按钮
     // 只有当前用户是该条issue修改人和当前issue状态不为“已关闭”的情况下开放
     showChangeBtn(index, rows) {
       if (
         this.userid == rows[index].modifier &&
-        rows[index].issuestate.detail != "已关闭"
+        rows[index].issuestate.detail == "待解决"
       ) {
         return false;
       }
@@ -505,7 +513,10 @@ export default {
     },
     // 是否显示验证按钮 只有当前用户是该条issue创建人的情况下开放
     showVerificationBtn(index, rows) {
-      if (this.userid == rows[index].creator) {
+      if (
+        this.userid == rows[index].creator &&
+        rows[index].issuestate.detail == "待验证"
+      ) {
         return false;
       }
       return true;
@@ -775,7 +786,7 @@ export default {
     height 800px
     position absolute
     top 10%
-    left 25%
+    left 10%
   .verificationDialog
     width 520px
     height 800px

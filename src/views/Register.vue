@@ -386,6 +386,7 @@ export default {
     box-shadow 0 0 25px #cac6c6
     position absolute
     z-index 5
+    border-radius 15px
     top 10%
     bottom 0
     left 0
