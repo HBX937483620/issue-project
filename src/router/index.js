@@ -8,6 +8,7 @@ import Create from '@/views/issue/Create.vue';
 import Query from '@/views/issue/Query.vue';
 import Report from '@/views/issue/Report.vue';
 import Manage from '@/views/account/Manage.vue';
+import Chart from '@/views/chart/Chart.vue';
 import Refresh from '@/views/refresh/Refresh.vue';
 
 Vue.use(VueRouter);
@@ -26,6 +27,7 @@ const routes = [
       { path: 'query', name: '查询Issue', component: Query, },
       { path: 'report', name: 'Issue报表', component: Report, },
       { path: 'manage', name: '账号管理', component: Manage, },
+      { path: 'chart', name: '信息统计图表', component: Chart, },
     ],
   },
   {

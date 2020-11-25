@@ -39,12 +39,14 @@
       </el-form-item>
     </el-form>
 
+    <!-- 表格数据 -->
     <el-table
       :data="
         tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
       "
       border
       stripe
+      class="content-table"
       style="width: 100%"
     >
       <el-table-column type="selection"> </el-table-column>
@@ -57,6 +59,18 @@
       <el-table-column label="完成率" sortable prop="rateString">
       </el-table-column>
     </el-table>
+    <!-- 导出按钮 -->
+    <div class="toexcel">
+      <el-button
+        @click="exportExcel"
+        type="primary"
+        plain
+        class="exportBtn"
+        style="width: 150px"
+        >导出为Excel文件</el-button
+      >
+    </div>
+    <!-- 分页 -->
     <el-pagination
       background
       @size-change="handleSizeChange"
@@ -66,12 +80,16 @@
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
       :total="tableData.length"
+      class="pagination"
     >
     </el-pagination>
   </div>
 </template>
 <script>
 import axios from "axios";
+// 导出Excel表格的依赖
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 
 export default {
   data() {
@@ -135,6 +153,41 @@ export default {
       console.log(`每页 ${val} 条`);
       this.pagesize = val;
     },
+    // 导出表格的处理函数
+    exportExcel() {
+      // 设置当前日期
+      let time = new Date();
+      let year = time.getFullYear();
+      let month = time.getMonth() + 1;
+      let day = time.getDate();
+      let name = year + "" + month + "" + day;
+      //  .table要导出的是哪一个表格
+      var wb = XLSX.utils.table_to_book(
+        document.querySelector(".content-table")
+      );
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array",
+      });
+      try {
+        //  name+'.xlsx'表示导出的excel表格名字
+        FileSaver.saveAs(
+          new Blob([wbout], { type: "application/octet-stream" }),
+          name + ".xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      this.$notify({
+        title: "成功",
+        message: "导出Excel文件成功 ੭ ᐕ)੭*⁾⁾",
+        type: "success",
+        showClose: false,
+      });
+      return wbout;
+    },
   },
   created() {
     // 创建时请求数据
@@ -144,9 +197,23 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.demo-ruleForm
-  .word-input
-    width 200px
-  .reset-btn
-    margin-left 20px
+.report
+  position relative
+  .demo-ruleForm
+    .word-input
+      width 200px
+    .reset-btn
+      margin-left 20px
+  // 导出按钮
+  .toexcel
+    position absolute
+    right 70px
+    margin 15px 0 30px
+    cursor pointer
+    cursor hand
+    width 100px
+    height 34px
+  // 分页
+  .pagination
+    margin-top 10px
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="query">
     <el-form :model="ruleForm" ref="ruleForm" class="form">
       <div class="title">Issue查询</div>
       <br />
@@ -174,6 +174,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 导出按钮 -->
+    <div class="toexcel">
+      <el-button
+        @click="exportExcel"
+        type="primary"
+        plain
+        class="exportBtn"
+        style="width: 150px"
+        >导出为Excel文件</el-button
+      >
+    </div>
     <el-pagination
       background
       @size-change="handleSizeChange"
@@ -349,6 +360,9 @@
 </template>
 <script>
 import axios from "axios";
+// 导出Excel表格的依赖
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 
 export default {
   data() {
@@ -653,6 +667,41 @@ export default {
           console.log(err);
         });
     },
+    // 导出表格的处理函数
+    exportExcel() {
+      // 设置当前日期
+      let time = new Date();
+      let year = time.getFullYear();
+      let month = time.getMonth() + 1;
+      let day = time.getDate();
+      let name = year + "" + month + "" + day;
+      //  .table要导出的是哪一个表格
+      var wb = XLSX.utils.table_to_book(
+        document.querySelector(".content-table")
+      );
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array",
+      });
+      try {
+        //  name+'.xlsx'表示导出的excel表格名字
+        FileSaver.saveAs(
+          new Blob([wbout], { type: "application/octet-stream" }),
+          name + ".xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      this.$notify({
+        title: "成功",
+        message: "导出Excel文件成功 ੭ ᐕ)੭*⁾⁾",
+        type: "success",
+        showClose: false,
+      });
+      return wbout;
+    },
   },
   created() {
     // 页面加载完后，默认将当前登录人的ID显示在修改人的框中
@@ -674,52 +723,63 @@ export default {
 // 隐藏滚动条
 >>>.el-drawer__container ::-webkit-scrollbar
   display none
-.form > *
-  float left
-  margin-left 5%
-  .word-input
-    width 200px
-.title
-  float none
-  font-size 30px
-  font-weight 550
-  color #00a8ff
-  margin-bottom -14px
-  margin-left 10px
-  padding-left 10px
-  border-left 10px solid #8c7ae6
-.button
-  margin-top 17px
-.content-table
-  width 100%
-  .btn
-    margin-left 0
-  .modify-btn
-    margin 0 1px
-.pagination
-  margin-top 10px
-.changFormButton
-  margin-left 30%
-.detail-form
-  margin-top -30px
-  .drawerItem
+.query
+  position relative
+  .form > *
+    float left
+    margin-left 5%
+    .word-input
+      width 200px
+  .title
+    float none
+    font-size 30px
+    font-weight 550
+    color #00a8ff
+    margin-bottom -14px
+    margin-left 10px
+    padding-left 10px
+    border-left 10px solid #8c7ae6
+  .button
+    margin-top 17px
+  .content-table
+    width 100%
+    .btn
+      margin-left 0
+    .modify-btn
+      margin 0 1px
+  // 导出按钮
+  .toexcel
+    position absolute
+    right 70px
+    margin 15px 0 30px
+    cursor pointer
+    cursor hand
+    width 100px
+    height 34px
+  .pagination
+    margin-top 10px
+  .changFormButton
+    margin-left 30%
+  .detail-form
+    margin-top -30px
+    .drawerItem
+      padding-left 60px
+      padding-right 60px
+  .DrawerClose
+    margin-left 47%
+  .area
     padding-left 60px
     padding-right 60px
-.DrawerClose
-  margin-left 47%
-.area
-  padding-left 60px
-  padding-right 60px
-.solutionDialog
-  width 800px
-  height 800px
-  position absolute
-  top 10%
-  left 25%
-.verificationDialog
-  width 520px
-  height 800px
-  position absolute
-  top 25%
-  left 30%
+  .solutionDialog
+    width 800px
+    height 800px
+    position absolute
+    top 10%
+    left 25%
+  .verificationDialog
+    width 520px
+    height 800px
+    position absolute
+    top 25%
+    left 30%
 </style>

@@ -2,13 +2,13 @@
   <div class="login-container">
     <swiper :options="swiperOption" ref="mySwiper">
       <swiper-slide
-        ><img class="img" src="../assets/images/backgroundImg.jpg" alt=""
+        ><img class="img" src="../assets/images/1.jpg" alt=""
       /></swiper-slide>
       <swiper-slide
-        ><img class="img" src="../assets/images/111.png" alt=""
+        ><img class="img" src="../assets/images/2.jpg" alt=""
       /></swiper-slide>
       <swiper-slide
-        ><img class="img" src="../assets/images/222.png" alt=""
+        ><img class="img" src="../assets/images/3.jpg" alt=""
       /></swiper-slide>
     </swiper>
     <h1 class="header">ISSUE管理系统 / 登录</h1>
@@ -36,6 +36,7 @@
           v-model="ruleForm2.password"
           auto-complete="off"
           placeholder="密码"
+          show-password
           @keyup.enter.native="handleSubmit"
         ></el-input>
       </el-form-item>
@@ -67,6 +68,7 @@ export default {
       //swiper 初始化
       swiperOption: {
         loop: true,
+        effect: "fade",
         autoplay: {
           delay: 3000,
           stopOnLastSlide: false,
@@ -187,13 +189,7 @@ export default {
 
 <style scoped lang="stylus">
 .login-container
-  // background-image url('../../src/assets/images/backgroundImg.jpg')
-  // background-repeat no-repeat
-  // background-attachment fixed
-  // background-size 100% 100%
   overflow scroll
-  // overflow-y auto
-  // overflow-x auto
   height 100%
   position relative
   .img
@@ -209,8 +205,12 @@ export default {
     color #fff
     position absolute
     z-index 5
-    top 0
-    margin-left 36%
+    top 10%
+    bottom 0
+    left 0
+    right 0
+    animation flip
+    animation-duration 1.25s
   .title
     text-align center
     color #409eff
@@ -219,14 +219,19 @@ export default {
     border-radius 5px
     margin 100px auto 180px
     width 350px
+    height 300px
     padding 35px 35px 15px
     background #fff
     border 1px solid #eaeaea
     box-shadow 0 0 25px #cac6c6
     position absolute
     z-index 5
-    top 0
-    margin-left 33%
+    top 10%
+    bottom 0
+    left 0
+    right 0
+    animation flip
+    animation-duration 1.25s
   .toRegister
     margin-bottom 10px
 label.el-checkbox.rememberme

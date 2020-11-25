@@ -8,9 +8,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/styles/index.stylus'
 // 导入moment日期处理库
 import moment from "moment";
+// 导入
+import animate from "animate.css";
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+Vue.use(animate);
 Vue.prototype.$moment = moment;
 
 new Vue({

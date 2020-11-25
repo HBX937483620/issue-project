@@ -51,6 +51,14 @@
               <i class="el-icon-setting"></i>
               <span slot="title">账号管理</span>
             </el-menu-item>
+            <el-menu-item
+              index="chart"
+              key="chart"
+              :disabled="reportBan ? true : false"
+            >
+              <i class="el-icon-pie-chart"></i>
+              <span slot="title">信息统计图表</span>
+            </el-menu-item>
           </el-menu>
         </div>
       </el-aside>
@@ -87,7 +95,19 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>我的消息</el-dropdown-item>
+                <el-dropdown-item class="clearfix">
+                  待修改Issue
+                  <el-badge
+                    class="mark"
+                    :value="12"
+                    :hidden="false"
+                    :max="10"
+                  />
+                </el-dropdown-item>
+                <el-dropdown-item class="clearfix">
+                  待验证Issue
+                  <el-badge class="mark" :value="3" :hidden="false" :max="10" />
+                </el-dropdown-item>
                 <el-dropdown-item>设置</el-dropdown-item>
                 <el-dropdown-item @click.native="openDialog">
                   修改个人信息
@@ -139,11 +159,18 @@
         </el-form-item>
 
         <el-form-item prop="password" class="changeitem" label="修改密码">
-          <el-input v-model="ruleForm.password" class="item-input"></el-input>
+          <el-input
+            type="password"
+            v-model="ruleForm.password"
+            show-password
+            class="item-input"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="checkPassword" label="确认密码" class="changeitem">
           <el-input
+            type="password"
+            show-password
             v-model="ruleForm.checkPassword"
             @keyup.enter.native="submitForm('ruleForm')"
             class="item-input"
@@ -383,27 +410,27 @@ export default {
       });
     }
     // 按照登陆者的身份信息禁掉相应的功能
-    switch (permission) {
-      // 1 表示普通用户 2 表示经理 3 超级Admin
-      case "1":
-        this.reportBan = true;
-        this.manageBan = true;
-        console.log(this.manageBan);
-        console.log(this.reportBan);
-        break;
-      case "2":
-        this.createBan = true;
-        this.manageBan = true;
-        console.log(this.createBan);
-        console.log(this.manageBan);
-        break;
-      case "3":
-        this.createBan = true;
-        this.reportBan = true;
-        console.log(this.createBan);
-        console.log(this.reportBan);
-        break;
-    }
+    // switch (permission) {
+    //   // 1 表示普通用户 2 表示经理 3 超级Admin
+    //   case "1":
+    //     this.reportBan = true;
+    //     this.manageBan = true;
+    //     console.log(this.manageBan);
+    //     console.log(this.reportBan);
+    //     break;
+    //   case "2":
+    //     this.createBan = true;
+    //     this.manageBan = true;
+    //     console.log(this.createBan);
+    //     console.log(this.manageBan);
+    //     break;
+    //   case "3":
+    //     this.createBan = true;
+    //     this.reportBan = true;
+    //     console.log(this.createBan);
+    //     console.log(this.reportBan);
+    //     break;
+    // }
   },
 };
 </script>
