@@ -65,7 +65,9 @@
                 tableData
               )
             "
-            @click.native.prevent="toManager(scope.$index, tableData)"
+            @click.native.prevent="
+              toManager(scope.$index + (currentPage - 1) * pagesize, tableData)
+            "
             >经理</el-button
           >
           <el-button
@@ -78,7 +80,9 @@
                 tableData
               )
             "
-            @click.native.prevent="LogOffUser(scope.$index, tableData)"
+            @click.native.prevent="
+              LogOffUser(scope.$index + (currentPage - 1) * pagesize, tableData)
+            "
             >注销</el-button
           >
         </template>
