@@ -112,11 +112,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.findIssueReport();
-          this.$message({
-            message: "查询成功~~~",
-            type: "success",
-          });
+          this.findIssueReport(1);
         } else {
           // console.log("error submit!!");
           return false;
@@ -124,7 +120,7 @@ export default {
       });
     },
     // 模糊查询 发送post请求，向后台请求报表数据
-    findIssueReport() {
+    findIssueReport(flag) {
       axios
         .post("/api/findIssueReport", {
           userid: this.ruleForm.userId,
@@ -132,10 +128,16 @@ export default {
         })
         .then((res) => {
           // console.log(res);
+          if (flag == 1) {
+            this.$message({
+              message: "查询成功~~~",
+              type: "success",
+            });
+          }
           this.tableData = res.data;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 重置表单
@@ -144,12 +146,12 @@ export default {
     },
     // 修改当前页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
     // 修改每页数据数
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
       this.pagesize = val;
     },
     // 导出表格的处理函数
@@ -190,7 +192,7 @@ export default {
   },
   created() {
     // 创建时请求数据
-    this.findIssueReport();
+    this.findIssueReport(0);
   },
 };
 </script>

@@ -162,7 +162,7 @@ export default {
           this.adminNum = res.data.adminNum;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
   },

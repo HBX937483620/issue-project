@@ -125,7 +125,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     };
 
@@ -291,7 +291,7 @@ export default {
               email: this.ruleForm1.email,
             })
             .then((res) => {
-              console.log(res);
+              // console.log(res);
               this.logining = false;
               this.$message({
                 message: "恭喜你，注册成功！",
@@ -302,11 +302,11 @@ export default {
               this.$router.push({ path: "/login" });
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
               this.logining = false;
             });
         } else {
-          console.log("error submit!");
+          // console.log("error submit!");
           this.$alert("请检查您的输入", "输入有误", {
             confirmButtonText: "ok",
             type: "warning",
@@ -322,7 +322,7 @@ export default {
           mailTo: this.ruleForm1.email,
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data) {
             this.emailCode = res.data;
             this.$message({
@@ -332,7 +332,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 路由跳转 -> 跳转到登录页面

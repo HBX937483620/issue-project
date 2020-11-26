@@ -367,7 +367,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.ruleForm.name);
+          // console.log(this.ruleForm.name);
           this.updateUser();
           // 用户修改个人信息可能会修改到用户名
           // 如果用户修改了用户名，则需要更新sessionStorage中name属性的值
@@ -377,7 +377,7 @@ export default {
           }
           this.dialogVisible = false;
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           this.$alert("请检查您的输入", "输入有误", {
             confirmButtonText: "ok",
             type: "warning",
@@ -393,7 +393,7 @@ export default {
           userid: this.ruleForm.userId,
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.ruleForm.userId = res.data.userid;
           this.ruleForm.name = res.data.name;
           this.ruleForm.email = res.data.email;
@@ -401,7 +401,7 @@ export default {
           this.ruleForm.checkPassword = res.data.password;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 修改用户信息的请求函数
@@ -426,7 +426,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 请求当前用户待修改issue数、待验证issue数
@@ -441,7 +441,7 @@ export default {
           this.modifiNum = res.data.modifiNum;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 切换dialog状态
@@ -458,18 +458,18 @@ export default {
     },
     // 文件上传的处理函数
     upload(e) {
-      console.log(e);
+      // console.log(e);
       let file = e.target.files[0];
       let param = new FormData(); //创建form对象
       param.append("userid", this.ruleForm.userId);
       param.append("file", file); //通过append向form对象添加数据
-      console.log(param.get("file")); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
-      console.log(param.get("userid"));
+      // console.log(param.get("file")); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      // console.log(param.get("userid"));
       let config = {
         headers: { "Content-Type": "multipart/form-data" },
       }; //添加请求头
       axios.post("api/getUserPic", param, config).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.circleUrl = res.data;
         sessionStorage.setItem("url", res.data);
         this.dialogVisible2 = false;
@@ -482,7 +482,7 @@ export default {
     let name = sessionStorage.getItem("name");
     let permission = sessionStorage.getItem("permission");
     let url = sessionStorage.getItem("url");
-    console.log(url);
+    // console.log(url);
     if (name) {
       this.username = name;
       this.ruleForm.userId = userid;
@@ -504,20 +504,20 @@ export default {
       case "1":
         this.reportBan = true;
         this.manageBan = true;
-        console.log(this.manageBan);
-        console.log(this.reportBan);
+        // console.log(this.manageBan);
+        // console.log(this.reportBan);
         break;
       case "2":
         this.createBan = true;
         this.manageBan = true;
-        console.log(this.createBan);
-        console.log(this.manageBan);
+        // console.log(this.createBan);
+        // console.log(this.manageBan);
         break;
       case "3":
         this.createBan = true;
         this.reportBan = true;
-        console.log(this.createBan);
-        console.log(this.reportBan);
+        // console.log(this.createBan);
+        // console.log(this.reportBan);
         break;
     }
   },

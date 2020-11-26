@@ -157,7 +157,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     };
     return {
@@ -288,11 +288,11 @@ export default {
               });
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
             });
           this.resetForm("ruleForm");
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           return false;
         }
       });
@@ -303,7 +303,7 @@ export default {
   },
   mounted() {
     this.userid = sessionStorage.getItem("userid");
-    console.log(this.userid);
+    // console.log(this.userid);
   },
 };
 </script>

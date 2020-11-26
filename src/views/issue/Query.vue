@@ -590,7 +590,7 @@ export default {
     // 点击详情按钮的处理函数
     showDetail(index, rows) {
       this.showDetails = true;
-      console.log(rows[index].issueid);
+      // console.log(rows[index].issueid);
       const issueId = rows[index].issueid;
       this.reportDetails(issueId);
     },
@@ -601,8 +601,8 @@ export default {
           issueid: issueId,
         })
         .then((res) => {
-          console.log(res);
-          console.log(this.timestampToTime(res.data[0].createdate));
+          // console.log(res);
+          // console.log(this.timestampToTime(res.data[0].createdate));
           this.detail.issueid = res.data[0].issueid;
           this.detail.title = res.data[0].title;
           this.detail.type = res.data[0].type;
@@ -618,7 +618,7 @@ export default {
           this.detail.solution = res.data[0].solution;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 点击修改按钮的处理函数
@@ -628,7 +628,7 @@ export default {
     },
     // 提交解决方案的处理函数
     solve() {
-      console.log(this.modifyIssueid);
+      // console.log(this.modifyIssueid);
       axios
         .post("/api/solve", {
           issueid: this.modifyIssueid,
@@ -643,7 +643,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 点击验证按钮的处理函数
@@ -661,12 +661,12 @@ export default {
           flag: flag,
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           _this.verification = false;
           this.findReport(0);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 验证弹窗点击退回修改的处理函数
@@ -707,7 +707,7 @@ export default {
           endEndDate: this.ruleForm.endDate[1],
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (flag == 1) {
             this.$message({
               message: "查询成功~~~",
@@ -719,7 +719,7 @@ export default {
           this.tableData = res.data;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 导出表格的处理函数

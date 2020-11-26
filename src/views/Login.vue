@@ -104,7 +104,7 @@ export default {
           this.logining = true;
           this.judgeLogin();
         } else {
-          console.log("error submit!");
+          // console.log("error submit!");
           this.$alert("请检查您的输入", "输入有误", {
             confirmButtonText: "ok",
           });
@@ -114,7 +114,7 @@ export default {
     },
     // 登录请求
     judgeLogin() {
-      console.log(this.ruleForm2.userid);
+      // console.log(this.ruleForm2.userid);
       axios
         .post(
           "/api/login",
@@ -127,10 +127,10 @@ export default {
           }
         )
         .then((res) => {
-          console.log(res.data);
-          console.log(res.data.name);
-          console.log(res.data.flag);
-          console.log(res.data.url);
+          // console.log(res.data);
+          // console.log(res.data.name);
+          // console.log(res.data.flag);
+          // console.log(res.data.url);
           // 1 登录成功  0 用户不存在 -1 密码错误 2 用户已注销
           switch (res.data.flag) {
             case "1":
@@ -168,7 +168,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           this.$alert("请检查服务端是否已开启", "登录失败", {
             confirmButtonText: "ok",
             showClose: false,

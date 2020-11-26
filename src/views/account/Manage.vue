@@ -184,10 +184,10 @@ export default {
               type: "success",
             });
           }
-          this.selectLikeByNameOrId();
+          this.selectLikeByNameOrId(0);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 点击注销按钮的处理函数
@@ -209,17 +209,17 @@ export default {
               type: "success",
             });
           }
-          this.selectLikeByNameOrId();
+          this.selectLikeByNameOrId(0);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 表单提交的处理函数
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.selectLikeByNameOrId();
+          this.selectLikeByNameOrId(1);
         } else {
           // console.log("error submit!!");
           return false;
@@ -227,22 +227,24 @@ export default {
       });
     },
     // 模糊查询 发送post请求，向后台请求表格数据
-    selectLikeByNameOrId() {
+    selectLikeByNameOrId(flag) {
       axios
         .post("/api/selectLikeByNameOrId", {
           userid: this.ruleForm.userId,
           name: this.ruleForm.name,
         })
         .then((res) => {
-          console.log(res.data);
-          this.$message({
-            message: "查询成功~~~",
-            type: "success",
-          });
+          // console.log(res.data);
+          if (flag == 1) {
+            this.$message({
+              message: "查询成功~~~",
+              type: "success",
+            });
+          }
           this.tableData = res.data;
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 表单重置函数
@@ -295,7 +297,7 @@ export default {
   },
   created() {
     // 创建时请求数据
-    this.selectLikeByNameOrId();
+    this.selectLikeByNameOrId(0);
   },
 };
 </script>
