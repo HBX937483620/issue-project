@@ -80,16 +80,101 @@
     <div class="display">
       <span class="allData">开发团队</span>
       <div class="content">
-        <div class="name">前端开发</div>
-        <div class="answer">蔡梓杰、钟浩</div>
+        <div class="name name1">前端开发</div>
+        <!-- <div class="answer">蔡梓杰、钟浩</div> -->
+        <div class="answer">
+          <el-popover
+            placement="top-start"
+            width="150"
+            trigger="hover"
+            style="margin-right: 10px"
+          >
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/1.jpg?sign=fcf7bc6ed501cb54d59d8906f5826e52&t=1606204670"
+              alt="蔡梓杰微信二维码hh"
+            />
+            <el-button slot="reference">蔡梓杰</el-button>
+          </el-popover>
+          <el-popover placement="top-end" width="150" trigger="hover">
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/6.jpg?sign=8288a5d2f57a550543634866968e5f62&t=1606204803"
+              alt="钟浩微信二维码hh"
+            />
+            <el-button slot="reference">钟浩</el-button>
+          </el-popover>
+        </div>
       </div>
       <div class="content">
-        <div class="name">后端开发</div>
-        <div class="answer">黄健超、黄金全、何柏祥</div>
+        <div class="name name1">后端开发</div>
+        <!-- <div class="answer">黄健超、黄金全、何柏祥</div> -->
+        <div class="answer">
+          <el-popover placement="left" width="150" trigger="hover">
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/3.jpg?sign=b6cc17e5f5e84b2e159140c26475500f&t=1606204710"
+              alt="黄健超微信二维码hh"
+            />
+            <el-button slot="reference">黄健超</el-button>
+          </el-popover>
+          <el-popover
+            placement="top"
+            width="150"
+            trigger="hover"
+            style="margin: 0 10px"
+          >
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/2.jpg?sign=7b284b42e9c2e3e40401e94bb66cb292&t=1606204697"
+              alt="黄金全微信二维码hh"
+            />
+            <el-button slot="reference">黄金全</el-button>
+          </el-popover>
+          <el-popover placement="right" width="150" trigger="hover">
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/8.jpg?sign=2fbd49b6eaca8b8c7d8c98085439a505&t=1606204816"
+              alt="何柏祥微信二维码hh"
+            />
+            <el-button slot="reference">何柏祥</el-button>
+          </el-popover>
+        </div>
       </div>
       <div class="content">
-        <div class="name">测试</div>
-        <div class="answer">刘健丰、陈祝愿、陈世明</div>
+        <div class="name name1">测试</div>
+        <!-- <div class="answer">刘健丰、陈祝愿、陈世明</div> -->
+        <div class="answer">
+          <el-popover placement="left" width="150" trigger="hover">
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/5.jpg?sign=edb6ce6cdb257b589f2a0cf5ff4d36e7&t=1606204791"
+              alt="刘健丰微信二维码hh"
+            />
+            <el-button slot="reference">刘健丰</el-button>
+          </el-popover>
+          <el-popover
+            placement="bottom"
+            width="150"
+            trigger="hover"
+            style="margin: 0 10px"
+          >
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/7.jpg?sign=4abde0a71d18c2db55eb2d131241aa1c&t=1606204810"
+              alt="陈祝愿微信二维码hh"
+            />
+            <el-button slot="reference">陈祝愿</el-button>
+          </el-popover>
+          <el-popover placement="right" width="150" trigger="hover">
+            <img
+              width="150px"
+              src="https://7975-yuncloud-123-1301997245.tcb.qcloud.la/issueUserImage/4.jpg?sign=73dfe91af3be8952ac2acc11eb60d5f2&t=1606204769"
+              alt="陈世明微信二维码hh"
+            />
+            <el-button slot="reference">陈世明</el-button>
+          </el-popover>
+        </div>
       </div>
     </div>
   </div>
@@ -250,6 +335,8 @@ export default {
         padding 10px
         font-size 18px
         font-weight 700
+      .name1
+        line-height 40px
       .answer
         padding 10px
         font-size 18px
