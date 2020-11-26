@@ -829,13 +829,12 @@ export default {
     position fixed
     width 800px
     height 800px
-    // position absolute
     top 18%
     left 22%
   .verificationDialog
+    position fixed
     width 520px
     height 800px
-    position absolute
-    top 25%
-    left 30%
+    top 20%
+    left 33%
 </style>
