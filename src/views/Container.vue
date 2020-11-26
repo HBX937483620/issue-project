@@ -499,27 +499,27 @@ export default {
     // 获取当前用户的待修改和待验证issue数
     this.getUser();
     // 按照登陆者的身份信息禁掉相应的功能
-    // switch (permission) {
-    //   // 1 表示普通用户 2 表示经理 3 超级Admin
-    //   case "1":
-    //     this.reportBan = true;
-    //     this.manageBan = true;
-    //     console.log(this.manageBan);
-    //     console.log(this.reportBan);
-    //     break;
-    //   case "2":
-    //     this.createBan = true;
-    //     this.manageBan = true;
-    //     console.log(this.createBan);
-    //     console.log(this.manageBan);
-    //     break;
-    //   case "3":
-    //     this.createBan = true;
-    //     this.reportBan = true;
-    //     console.log(this.createBan);
-    //     console.log(this.reportBan);
-    //     break;
-    // }
+    switch (permission) {
+      // 1 表示普通用户 2 表示经理 3 超级Admin
+      case "1":
+        this.reportBan = true;
+        this.manageBan = true;
+        console.log(this.manageBan);
+        console.log(this.reportBan);
+        break;
+      case "2":
+        this.createBan = true;
+        this.manageBan = true;
+        console.log(this.createBan);
+        console.log(this.manageBan);
+        break;
+      case "3":
+        this.createBan = true;
+        this.reportBan = true;
+        console.log(this.createBan);
+        console.log(this.reportBan);
+        break;
+    }
   },
 };
 </script>

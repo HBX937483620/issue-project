@@ -150,7 +150,9 @@
             round
             size="mini"
             class="btn"
-            @click.native.prevent="showDetail(scope.$index, tableData)"
+            @click.native.prevent="
+              showDetail(scope.$index + (currentPage - 1) * pagesize, tableData)
+            "
             >详情</el-button
           >
           <el-button
@@ -164,7 +166,12 @@
                 tableData
               )
             "
-            @click.native.prevent="showChangeDialog(scope.$index, tableData)"
+            @click.native.prevent="
+              showChangeDialog(
+                scope.$index + (currentPage - 1) * pagesize,
+                tableData
+              )
+            "
             >修改</el-button
           >
           <el-button
@@ -178,7 +185,12 @@
                 tableData
               )
             "
-            @click.native.prevent="showVerification(scope.$index, tableData)"
+            @click.native.prevent="
+              showVerification(
+                scope.$index + (currentPage - 1) * pagesize,
+                tableData
+              )
+            "
             >验证</el-button
           >
         </template>
@@ -319,6 +331,7 @@
     <!-- 修改的弹窗 -->
     <el-dialog
       title="解决方案"
+      :show-close="false"
       :visible.sync="changeDialog"
       :close-on-click-modal="false"
       class="solutionDialog"
@@ -338,7 +351,9 @@
           <el-button type="primary" @click="submitForm1('changeForm')"
             >确认</el-button
           >
-          <el-button type="info" @click="changeDialog = false">取消</el-button>
+          <el-button type="info" @click="cancelDialog('changeForm')"
+            >取消</el-button
+          >
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -488,7 +503,7 @@ export default {
       if (date == undefined) {
         return "";
       }
-      return this.$moment(date).format("YYYY-MM-DD");
+      return this.$moment(date).format("YYYY-MM-DD HH:mm");
     },
     // 时间戳转换日期格式的处理函数
     timestampToTime(timestamp) {
@@ -553,6 +568,11 @@ export default {
           return false;
         }
       });
+    },
+    //取消修改方案的表单清空
+    cancelDialog(formName1) {
+      this.changeDialog = false;
+      this.$refs[formName1].resetFields();
     },
     // 重置表单的函数
     resetForm(formName) {
@@ -678,6 +698,8 @@ export default {
           endEndDate: this.ruleForm.endDate[1],
         })
         .then((res) => {
+          console.log(res);
+          // console.log(res.data.);
           this.$message({
             message: "查询成功~~~",
             type: "success",

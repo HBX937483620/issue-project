@@ -70,7 +70,7 @@ export default {
         loop: true,
         effect: "fade",
         autoplay: {
-          delay: 3000,
+          delay: 5000,
           stopOnLastSlide: false,
           disableOnInteraction: false,
         },

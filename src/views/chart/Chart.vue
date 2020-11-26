@@ -48,8 +48,8 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: "55%",
-            center: ["70%", "50%"],
+            radius: "30%",
+            center: ["50%", "50%"],
             data: [
               { value: res.data.createNum, name: "待解决Issue数" },
               { value: res.data.modefiNum, name: "待验证Issue数" },
@@ -92,8 +92,8 @@ export default {
           {
             name: "访问来源",
             type: "pie",
-            radius: "55%",
-            center: ["50%", "90%"],
+            radius: "30%",
+            center: ["50%", "50%"],
             data: [
               { value: res.data.commonNum, name: "普通用户数" },
               { value: res.data.manageNum, name: "经理数" },
@@ -121,18 +121,23 @@ export default {
   background-size cover
   width 100%
   height 100%
-  // box-shadow 0px 0px 30px 30px white inset
+  // position relative
+  box-shadow 0px 0px 30px 30px black inset
   overflow hidden
   .box1
+    // position absolute
     float left
-  .issueChart
     width 600px
     height 600px
+  .issueChart
+    width 100%
+    height 100%
     float left
+
     // background-image radial-gradient(closest-side at 50% 50%, black, white, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0))
   .UserChart
-    width 600px
-    height 600px
+    width 100%
+    height 100%
     float left
     // background-image radial-gradient(closest-side at 50% 50%, black, white, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0))
 </style>

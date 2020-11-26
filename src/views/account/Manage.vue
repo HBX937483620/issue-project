@@ -59,7 +59,12 @@
           <el-button
             size="mini"
             type="primary"
-            :disabled="showToManagerBtn(scope.$index, tableData)"
+            :disabled="
+              showToManagerBtn(
+                scope.$index + (currentPage - 1) * pagesize,
+                tableData
+              )
+            "
             @click.native.prevent="toManager(scope.$index, tableData)"
             >经理</el-button
           >
@@ -67,7 +72,12 @@
             size="mini"
             type="danger"
             style="margin-left: 2px"
-            :disabled="showLogOffUserBtn(scope.$index, tableData)"
+            :disabled="
+              showLogOffUserBtn(
+                scope.$index + (currentPage - 1) * pagesize,
+                tableData
+              )
+            "
             @click.native.prevent="LogOffUser(scope.$index, tableData)"
             >注销</el-button
           >
