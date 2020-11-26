@@ -564,11 +564,11 @@ export default {
   display block
 .wrapper
   .user-img
-    margin 0 14%
+    margin 0 12%
     img
       width 240px
   .file
-    margin 20px 36% 0
+    margin 20px 34% 0
     position relative
     display inline-block
     background #D0EEFF

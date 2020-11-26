@@ -45,8 +45,8 @@
       style="width: 100%"
     >
       <el-table-column type="selection"> </el-table-column>
-      <el-table-column label="序号" sortable prop="id"> </el-table-column>
-      <el-table-column label="用户ID" sortable prop="userid"> </el-table-column>
+      <el-table-column label="序号" prop="id"> </el-table-column>
+      <el-table-column label="用户ID" prop="userid"> </el-table-column>
       <el-table-column label="用户姓名" prop="name"> </el-table-column>
       <el-table-column label="邮箱" prop="email"> </el-table-column>
       <el-table-column label="注册时间" :formatter="dateFormat" prop="signup">

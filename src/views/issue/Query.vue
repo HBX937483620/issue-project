@@ -94,27 +94,30 @@
     >
       <el-table-column header-align="center" type="selection">
       </el-table-column>
-      <el-table-column header-align="center" label="ID" sortable prop="id">
+      <el-table-column header-align="center" label="ID" prop="id" width="50px">
       </el-table-column>
       <el-table-column
         header-align="center"
         label="Issue ID"
-        sortable
         prop="issueid"
         width="100px"
       >
       </el-table-column>
-      <el-table-column header-align="center" label="Issue标题" prop="title">
+      <el-table-column
+        header-align="center"
+        label="Issue标题"
+        prop="title"
+        width="120px"
+      >
       </el-table-column>
       <el-table-column header-align="center" label="创建人" prop="creator">
       </el-table-column>
       <el-table-column
         header-align="center"
         label="创建时间"
-        sortable
         prop="createdate"
         :formatter="dateFormat"
-        width="125px"
+        width="135px"
       >
       </el-table-column>
       <el-table-column header-align="center" label="修改人" prop="modifier">
@@ -128,16 +131,14 @@
       <el-table-column
         header-align="center"
         label="计划完成时间"
-        sortable
         prop="plandate"
-        :formatter="dateFormat"
+        :formatter="dateFormat1"
         width="140px"
       >
       </el-table-column>
       <el-table-column
         header-align="center"
         label="实际完成时间"
-        sortable
         prop="enddate"
         :formatter="dateFormat"
         width="140px"
@@ -213,7 +214,7 @@
       @current-change="handleCurrentChange"
       :current-page="1"
       :page-sizes="[5, 10, 20, 50]"
-      :page-size="10"
+      :page-size="20"
       layout="total, sizes, prev, pager, next, jumper"
       :total="tableData.length"
       class="pagination"
@@ -412,7 +413,7 @@ export default {
       // 分页联动数据
       pageTotal: 0,
       currentPage: 1, //默认第一页
-      pagesize: 10, //当前显示页数
+      pagesize: 20, //当前显示页数
       toggle: false,
       ruleForm: {
         issueId: "",
@@ -497,13 +498,21 @@ export default {
     },
   },
   methods: {
-    //时间格式化
+    //时间格式化，包括年月日时分
     dateFormat(row, column) {
       var date = row[column.property];
       if (date == undefined) {
         return "";
       }
       return this.$moment(date).format("YYYY-MM-DD HH:mm");
+    },
+    //时间格式化 包括年月日，不包括时分秒
+    dateFormat1(row, column) {
+      var date = row[column.property];
+      if (date == undefined) {
+        return "";
+      }
+      return this.$moment(date).format("YYYY-MM-DD");
     },
     // 时间戳转换日期格式的处理函数
     timestampToTime(timestamp) {
@@ -550,7 +559,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.findReport();
+          this.findReport(1);
         } else {
           // console.log("error submit!!");
           return false;
@@ -654,7 +663,7 @@ export default {
         .then((res) => {
           console.log(res);
           _this.verification = false;
-          this.findReport();
+          this.findReport(0);
         })
         .catch((err) => {
           console.log(err);
@@ -685,7 +694,7 @@ export default {
       this.currentPage = val;
     },
     // 模糊查询 发送post请求，向后台请求report数据
-    findReport() {
+    findReport(flag) {
       axios
         .post("/api/findReport", {
           issueid: this.ruleForm.issueId,
@@ -699,11 +708,14 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          if (flag == 1) {
+            this.$message({
+              message: "查询成功~~~",
+              type: "success",
+            });
+          }
           // console.log(res.data.);
-          this.$message({
-            message: "查询成功~~~",
-            type: "success",
-          });
+
           this.tableData = res.data;
         })
         .catch((err) => {
@@ -752,7 +764,7 @@ export default {
     this.userid = userid;
     this.ruleForm.modifier = userid;
     // 创建时请求数据
-    this.findReport();
+    this.findReport(0);
   },
 };
 </script>
@@ -814,11 +826,12 @@ export default {
     padding-left 60px
     padding-right 60px
   .solutionDialog
+    position fixed
     width 800px
     height 800px
-    position absolute
-    top 10%
-    left 10%
+    // position absolute
+    top 18%
+    left 22%
   .verificationDialog
     width 520px
     height 800px

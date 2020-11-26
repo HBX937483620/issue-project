@@ -46,9 +46,9 @@ export default {
         },
         series: [
           {
-            name: "访问来源",
+            name: "MySQL数据库",
             type: "pie",
-            radius: "30%",
+            radius: "50%",
             center: ["50%", "50%"],
             data: [
               { value: res.data.createNum, name: "待解决Issue数" },
@@ -59,7 +59,7 @@ export default {
               normal: {
                 label: {
                   show: true,
-                  formatter: "{b} : {c} ({d}%)",
+                  formatter: "{b} :\n {c} ({d}%)",
                 },
                 labelLine: { show: true },
               },
@@ -88,17 +88,30 @@ export default {
             color: "#409eff", // 主标题文字颜色
           },
         },
+        tooltip: {
+          trigger: "item",
+          formatter: "{b} : {c} ({d}%)",
+        },
         series: [
           {
-            name: "访问来源",
+            name: "MySQL数据库",
             type: "pie",
-            radius: "30%",
+            radius: "50%",
             center: ["50%", "50%"],
             data: [
               { value: res.data.commonNum, name: "普通用户数" },
               { value: res.data.manageNum, name: "经理数" },
               { value: res.data.adminNum, name: "超级Admin数" },
             ],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  formatter: "{b} :\n {c} ({d}%)",
+                },
+                labelLine: { show: true },
+              },
+            },
           },
         ],
         legend: {
@@ -122,9 +135,7 @@ export default {
   width 100%
   height 100%
   // position relative
-  box-shadow 0px 0px 30px 30px black inset
-  overflow hidden
-  .box1
+  box-shadow 0px 0px 30px 30px black inset, overflow hidden, .box1
     // position absolute
     float left
     width 600px
@@ -133,8 +144,6 @@ export default {
     width 100%
     height 100%
     float left
-
-    // background-image radial-gradient(closest-side at 50% 50%, black, white, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0))
   .UserChart
     width 100%
     height 100%
