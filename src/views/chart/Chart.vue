@@ -29,6 +29,11 @@ export default {
     // 请求获取统计数据的函数
     axios.post("/api/getAll").then((res) => {
       issueChart.setOption({
+        toolbox: {
+          feature: {
+            saveAsImage: {},
+          },
+        },
         color: colorList1,
         title: {
           text: "Issue统计",
@@ -77,6 +82,11 @@ export default {
         },
       });
       UserChart.setOption({
+        toolbox: {
+          feature: {
+            saveAsImage: {},
+          },
+        },
         color: colorList2,
         title: {
           text: "用户统计",
