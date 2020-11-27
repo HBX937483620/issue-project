@@ -23,7 +23,7 @@ export default {
     /*ECharts图表*/
     // 颜色
     var colorList1 = ["#0fbcf9", "#e056fd", "#FCCE10"];
-    var colorList2 = ["#5D84FF", "#ff7979", "#F3A43B"];
+    var colorList2 = ["#4cd137", "#5D84FF", "#ff6b6b", "#ff7979", "#F3A43B"];
     var issueChart = echarts.init(document.getElementById("issueChart"));
     var UserChart = echarts.init(document.getElementById("UserChart"));
     // 请求获取统计数据的函数
@@ -94,7 +94,7 @@ export default {
         },
         series: [
           {
-            name: "MySQL数据库",
+            // name: "数据来源",
             type: "pie",
             radius: "50%",
             center: ["50%", "50%"],

@@ -50,12 +50,15 @@
       style="width: 100%"
     >
       <el-table-column type="selection"> </el-table-column>
-      <el-table-column label="序号" prop="id"></el-table-column>
+      <el-table-column label="序号" sortable prop="id"></el-table-column>
       <el-table-column label="用户ID" prop="userid"> </el-table-column>
       <el-table-column label="用户姓名" prop="name"> </el-table-column>
-      <el-table-column label="创建Issue数" prop="createNum"> </el-table-column>
-      <el-table-column label="收到Issue数" prop="modifiNum"> </el-table-column>
-      <el-table-column label="修改Issue数" prop="finishNum"> </el-table-column>
+      <el-table-column label="创建Issue数" sortable prop="createNum">
+      </el-table-column>
+      <el-table-column label="收到Issue数" sortable prop="modifiNum">
+      </el-table-column>
+      <el-table-column label="修改Issue数" sortable prop="finishNum">
+      </el-table-column>
       <el-table-column label="完成率" prop="rateString"> </el-table-column>
     </el-table>
     <!-- 导出按钮 -->

@@ -56,7 +56,7 @@
           </el-date-picker>
         </div>
       </el-form-item>
-      <el-form-item label="修改时间" prop="endDate">
+      <el-form-item label="实际完成时间" prop="endDate">
         <div>
           <el-date-picker
             v-model="ruleForm.endDate"
@@ -202,6 +202,7 @@
       <el-button
         @click="exportExcel"
         type="primary"
+        :disabled="showExportBtn"
         plain
         class="exportBtn"
         style="width: 150px"
@@ -394,6 +395,7 @@ export default {
   data() {
     return {
       userid: "",
+      permission: 1,
       //详情、修改、验证三个按钮对应的弹窗数据
       showDetails: false,
       changeDialog: false,
@@ -551,6 +553,13 @@ export default {
         this.userid == rows[index].creator &&
         rows[index].issuestate.detail == "待验证"
       ) {
+        return false;
+      }
+      return true;
+    },
+    // 是否显示导出Excel按钮，只有当前用户身份是经理的情况下开放
+    showExportBtn() {
+      if (this.permission == 2) {
         return false;
       }
       return true;
@@ -761,7 +770,9 @@ export default {
   created() {
     // 页面加载完后，默认将当前登录人的ID显示在修改人的框中
     let userid = sessionStorage.getItem("userid");
+    let permission = sessionStorage.getItem("permission");
     this.userid = userid;
+    this.permission = permission;
     this.ruleForm.modifier = userid;
     // 创建时请求数据
     this.findReport(0);
