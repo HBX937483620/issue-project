@@ -202,7 +202,7 @@
       <el-button
         @click="exportExcel"
         type="primary"
-        :disabled="showExportBtn"
+        :disabled="showExportBtn()"
         plain
         class="exportBtn"
         style="width: 150px"
@@ -581,6 +581,7 @@ export default {
         if (valid) {
           this.solve();
           this.changeDialog = false;
+          this.findReport(0);
         } else {
           this.changeDialog = false;
           return false;
